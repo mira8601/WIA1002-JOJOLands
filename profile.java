@@ -17,14 +17,15 @@ public class profile{
         this.name = name;
     }
     
-    public void residentProfile(){
-        String residentFilePath = "C:\\Users\\hp\\Downloads\\residents.csv";
-        String standFilePath = "C:\\Users\\hp\\Downloads\\stands.csv";
+    public boolean residentProfile(String residentFilePath, String standFilePath){
+        //String residentFilePath = "C:\\Users\\hp\\Downloads\\residents.csv";
+        //String standFilePath = "C:\\Users\\hp\\Downloads\\stands.csv";
 
         loadFile loadSystemFile = new loadFile();
         ArrayList<resident> resident = loadSystemFile.loadresidentFromFile(residentFilePath);
         ArrayList<stand> stand = loadSystemFile.loadstandFromFile(standFilePath);
         //check name and print profile details
+        boolean containName = false;
         for(int i=0;i<resident.size();i++){
             if((resident.get(i).getName()).equals(name)){
                     System.out.println(name + "'s Profile");
@@ -32,12 +33,14 @@ public class profile{
                         + "Age\t: " + resident.get(i).getAge() + "\n" 
                         + "Gender\t: " + resident.get(i).getGender() + "\n"
                         + "Parents\t: " + resident.get(i).getParents());
+                    containName = true;
                }
         }
+        
         //check name if have stand
         for(int i=0;i<stand.size();i++){
             if((stand.get(i).getStandUser()).equals(name)){
-                    System.out.println("Stand\t\t\t: " + stand.get(i).getStandUser() + "\n" 
+                    System.out.println("Stand\t\t\t: " + stand.get(i).getStand() + "\n" 
                         + "Destructive Power\t: " + stand.get(i).getDestructivePower() + "\n" 
                         + "Speed\t\t\t: " + stand.get(i).getSpeed() + "\n"
                         + "Range\t\t\t: " + stand.get(i).getRange() + "\n" 
@@ -46,9 +49,8 @@ public class profile{
                         + "Development Potential\t: " + stand.get(i).getDevelopmentPotential());
                }
         }
-        
+        return containName;
     }
     
-    
-    
+   
 }
