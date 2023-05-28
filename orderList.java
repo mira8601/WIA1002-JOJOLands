@@ -13,15 +13,16 @@ import java.util.ArrayList;
 
 public class orderList {
     private String name;
-    private int[] dayNum;
+    private int dayNum;
+    private int[] day;
     private String[] food;
     private String[] restaurant;
     
-    public orderList(String name, int[] dayNum, String[] food, String[] restaurant){
+    public orderList(String name, int dayNum, String food, String restaurant){
         this.name = name;
         this.dayNum = dayNum;
-        this.food = food;
-        this.restaurant = restaurant;
+        this.food[dayNum] = food; //store food according to day
+        this.restaurant[dayNum] = restaurant; //store restaurant according to day
     }
     
     public String getName() {
@@ -29,7 +30,10 @@ public class orderList {
     }
     
     public int[] getDayNum() {
-        return dayNum;
+        for(int i=0;i<dayNum;i++){ //create array day from 1 until dayNum
+            day[i] = i+1;
+        }
+        return day;
     }
     
     public String[] getFood() {

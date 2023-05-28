@@ -13,7 +13,7 @@ public class Menu {
     private String selectedRestaurant;
     private MenuItem[] menuItem;
     
-    public void Menu(int restaurant){ //pass index for restaurant and food from randomOrder class
+    public Menu(int restaurant){ //pass index for restaurant and food from randomOrder class
         this.restaurant = restaurant;
         setMenu();
     }

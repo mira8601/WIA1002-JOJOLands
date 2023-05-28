@@ -22,7 +22,7 @@ public class orderHistory {
     }
     
     public void printOrderHistory(){ 
-        randomOrder ro= new randomOrder(name,dayNum);
+        randomOrder ro= new randomOrder(dayNum);
         ArrayList<orderList> orderList = ro.randomOrderGenerator();
         System.out.println();
         System.out.println("Order History");
@@ -38,9 +38,8 @@ public class orderHistory {
                             + restaurant[j] + "\t|");
                 }
             }
-        
+        }
         System.out.println("+------+-------------------------------+--------------+");
         System.out.println("=================================================================");
-        
     }
 }
