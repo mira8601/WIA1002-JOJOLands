@@ -20,7 +20,7 @@ public class Menu {
     
      public void setMenu() {
         switch (restaurant) {
-            case 1:
+            case 0:
                 selectedRestaurant = "Jade Garden";
                 menuItem = new MenuItem[]{
                     new MenuItem("Braised Chicken in Black Bean Sauce", 15.00),
@@ -30,7 +30,7 @@ public class Menu {
                     new MenuItem("Scrambled Egg White with Milk", 10.00)
                 };
                 break;
-            case 2:
+            case 1:
                 selectedRestaurant = "Cafe Deux Magots";
                 menuItem = new MenuItem[]{
                     new MenuItem("Sampling Matured Cheese Platter", 23.00),
@@ -40,7 +40,7 @@ public class Menu {
                     new MenuItem("White Asparagus", 26.00)
                 };
                 break;
-            case 3:
+            case 2:
                 selectedRestaurant = "Trattoria Trussardi";
                 menuItem = new MenuItem[]{
                     new MenuItem("Caprese Salad", 10.00),
@@ -49,7 +49,7 @@ public class Menu {
                     new MenuItem("Spaghetti alla Puttanesca", 15.00)
                 };
                 break;
-            case 4:
+            case 3:
                 selectedRestaurant = "Libeccio";
                 menuItem = new MenuItem[]{
                     new MenuItem("Formaggio", 12.50),
@@ -60,7 +60,7 @@ public class Menu {
                     new MenuItem("Zucchero and Sale", 0.60),
                 };
                 break;
-            case 5:
+            case 4:
                 selectedRestaurant = "Savage Garden";
                 menuItem = new MenuItem[]{
                     new MenuItem("Abbacchio’s Tea", 1.00),

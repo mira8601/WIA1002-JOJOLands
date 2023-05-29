@@ -17,12 +17,16 @@ public class orderList {
     private int[] day;
     private String[] food;
     private String[] restaurant;
+    private int[] indexRest;
+    private int[] indexOrder;
     
-    public orderList(String name, int dayNum, String food, String restaurant){
+    public orderList(String name, int dayNum, String food, String restaurant, int indexRest, int indexOrder){
         this.name = name;
         this.dayNum = dayNum;
         this.food[dayNum] = food; //store food according to day
         this.restaurant[dayNum] = restaurant; //store restaurant according to day
+        this.indexRest[dayNum] = indexRest;
+        this.indexOrder[dayNum] = indexOrder;
     }
     
     public String getName() {
@@ -42,6 +46,10 @@ public class orderList {
     
     public String[] getRestaurant() {
         return restaurant;
+    }
+    
+    public int[] getIndexOrder() { 
+        return indexOrder;
     }
 }
 

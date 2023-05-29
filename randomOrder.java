@@ -96,11 +96,20 @@ public class randomOrder {
     public Pair<Integer> josephOrder(){
         /*won’t eat the same food twice until he’s tried 
           everything currently available in JOJOLand’s*/
-        
-        int indexRest = ran.nextInt(); //get index for restaurant
-        int indexOrder = ran.nextInt(); //get index for order
-        //store order history in list 
-        //orderList.add();
+        int[] indexCompare;
+        int indexRest = ran.nextInt(5); //get index for restaurant
+        int indexOrder = ran.nextInt(getBound(indexRest)); //get index for order
+        if(dayNum < 26 && dayNum > 1){ //check if total days = total menu and total days more than 1
+            for(int i=0;i<orderList.size();i++){
+                if(orderList.get(i).getName().equals(name)){
+                    for(int j=0;j<orderList.size();j++){
+                        indexCompare = orderList.get(i).getIndexOrder();
+                        indexRest = ran.nextInt(5); //get index for restaurant
+                        indexOrder = ran.nextInt(getBound(indexRest)); //get index for order
+                    }
+                }
+            }
+        }
         return new Pair<>(indexRest, indexOrder);
     }
     
@@ -156,10 +165,10 @@ public class randomOrder {
         food = menu.getFood(pair.second);
         for(int i=0;i<orderList.size();i++){
             if((orderList.get(i).getName()).equals(name)){
-                orderList.set(i, new orderList(name, dayNum, food, restaurant));
+                orderList.set(i, new orderList(name, dayNum, food, restaurant, pair.first, pair.second));
             }
             else{
-                orderList.add(new orderList(name, dayNum, food, restaurant));
+                orderList.add(new orderList(name, dayNum, food, restaurant, pair.first, pair.second));
             }
         }
         return orderList;
@@ -169,6 +178,30 @@ public class randomOrder {
         int indexRest = ran.nextInt(); //get index for restaurant
         int indexOrder = ran.nextInt(); //get index for order
         return new Pair<>(indexRest, indexOrder);
+    }
+    
+    public int getBound(int indexRest){ //get total menu for each restaurant for random bound num
+        int bound = 0;
+        switch (indexRest) {
+            case 0:
+                bound = 5;
+                break;
+            case 1:
+                bound = 5;
+                break;
+            case 2:
+                bound = 4;
+                break;
+            case 3:
+                bound = 6;
+                break;
+            case 4:
+                bound = 6;
+                break;
+            default:
+                break;
+        }
+        return bound;
     }
     
     public class Pair<T> { //generic class to pair index values
