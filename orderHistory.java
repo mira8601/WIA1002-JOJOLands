@@ -21,7 +21,7 @@ public class orderHistory {
         this.dayNum = dayNum;
     }
     
-    public void printOrderHistory(){ 
+    public void printOrderHistory(){ //somehow when run, it stops here w/o error. Pls help T.T
         randomOrder ro= new randomOrder(dayNum);
         ArrayList<orderList> orderList = ro.randomOrderGenerator();
         System.out.println();

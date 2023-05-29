@@ -4,24 +4,20 @@
  */
 package jojolands;
 
-/**
- *
- * @author 22004818
- */
-public class Menu {
-    private int restaurant;
-    private String selectedRestaurant;
+public class Menu{
     private MenuItem[] menuItem;
-    
-    public Menu(int restaurant){ //pass index for restaurant and food from randomOrder class
-        this.restaurant = restaurant;
+    private String selectedRestaurant;
+    private int indexRest;
+
+    public Menu(int indexRest) {
+        this.indexRest = indexRest;
         setMenu();
     }
-    
-     public void setMenu() {
-        switch (restaurant) {
+
+    public void setMenu() {
+        switch (indexRest) {
             case 0:
-                selectedRestaurant = "Jade Garden";
+                selectedRestaurant = "Jade Gardens";
                 menuItem = new MenuItem[]{
                     new MenuItem("Braised Chicken in Black Bean Sauce", 15.00),
                     new MenuItem("Braised Goose Web with Vermicelli", 21.00),
@@ -31,7 +27,7 @@ public class Menu {
                 };
                 break;
             case 1:
-                selectedRestaurant = "Cafe Deux Magots";
+                selectedRestaurant = "Cafe Daux Magots";
                 menuItem = new MenuItem[]{
                     new MenuItem("Sampling Matured Cheese Platter", 23.00),
                     new MenuItem("Spring Lobster Salad", 35.00),
@@ -98,9 +94,10 @@ public class Menu {
         return selectedRestaurant;
     }
     
-    public String getFood(int indexFood){
-        MenuItem item = menuItem[indexFood];
-        String food = item.getName();
+    public String getFood(int indexOrder){
+        String food;
+        MenuItem item = menuItem[indexOrder];
+        food = item.getName();
         return food;
     }
 
@@ -110,12 +107,10 @@ public class Menu {
 
             for (int i = 0; i < menuItem.length; i++) {
                 MenuItem item = menuItem[i];
-                System.out.println(item.getName() + " (" + item.getPrice() + ")");
+                System.out.printf("%s (%.2f)\n" ,item.getName(),item.getPrice());
             }
         } else {
             System.out.println("Menu not available for the specified restaurant.");
         }
     }
 }
-
-

@@ -86,8 +86,8 @@ public class randomOrder {
           or infrequently. Difference in frequency between the 
           foods he eats most and least should not exceed 1.*/
         
-        int indexRest = ran.nextInt(); //get index for restaurant
-        int indexOrder = ran.nextInt(); //get index for order
+        int indexRest = ran.nextInt(5); //get index for restaurant
+        int indexOrder = ran.nextInt(getBound(indexRest)); //get index for order
         //store order history in list 
         //orderList.add();
         return new Pair<>(indexRest, indexOrder);
@@ -96,16 +96,27 @@ public class randomOrder {
     public Pair<Integer> josephOrder(){
         /*won’t eat the same food twice until he’s tried 
           everything currently available in JOJOLand’s*/
-        int[] indexCompare;
+        int[] indexCompareFood;
+        int[] indexCompareRest;
+        int[] totalDays;
         int indexRest = ran.nextInt(5); //get index for restaurant
         int indexOrder = ran.nextInt(getBound(indexRest)); //get index for order
         if(dayNum < 26 && dayNum > 1){ //check if total days = total menu and total days more than 1
             for(int i=0;i<orderList.size();i++){
                 if(orderList.get(i).getName().equals(name)){
-                    for(int j=0;j<orderList.size();j++){
-                        indexCompare = orderList.get(i).getIndexOrder();
-                        indexRest = ran.nextInt(5); //get index for restaurant
-                        indexOrder = ran.nextInt(getBound(indexRest)); //get index for order
+                    indexCompareFood = orderList.get(i).getIndexOrder();
+                    indexCompareRest = orderList.get(i).getIndexRest();
+                    totalDays = orderList.get(i).getDayNum();
+                    for(int j=0;j<totalDays.length;j++){
+                        for(int k=0;k<totalDays.length;k++){
+                            if(indexCompareRest[j] == indexRest){
+                                if(indexCompareFood[k] == indexOrder){ //check if order is similar
+                                    indexRest = ran.nextInt(5); //get new index for restaurant
+                                    indexOrder = ran.nextInt(getBound(indexRest)); //get new index for order
+                                }
+                            }
+                        }
+                        
                     }
                 }
             }
@@ -117,8 +128,8 @@ public class randomOrder {
         /*try every dish at one restaurant 
           before moving on to the next.*/
         
-        int indexRest = ran.nextInt(); //get index for restaurant
-        int indexOrder = ran.nextInt(); //get index for order
+        int indexRest = ran.nextInt(5); //get index for restaurant
+        int indexOrder = ran.nextInt(getBound(indexRest)); //get index for order
         //store order history in list 
         //orderList.add();
         return new Pair<>(indexRest, indexOrder);
@@ -127,8 +138,8 @@ public class randomOrder {
     public Pair<Integer> josukeOrder(){
         //tight weekly budget of $100
         
-        int indexRest = ran.nextInt(); //get index for restaurant
-        int indexOrder = ran.nextInt(); //get index for order
+        int indexRest = ran.nextInt(5); //get index for restaurant
+        int indexOrder = ran.nextInt(getBound(indexRest)); //get index for order
         //store order history in list 
         //orderList.add();
         return new Pair<>(indexRest, indexOrder);
@@ -139,8 +150,8 @@ public class randomOrder {
           different dish than last visit except when only
           1 option available*/
         
-        int indexRest = ran.nextInt(); //get index for restaurant
-        int indexOrder = ran.nextInt(); //get index for order
+        int indexRest = ran.nextInt(5); //get index for restaurant
+        int indexOrder = ran.nextInt(getBound(indexRest)); //get index for order
         //store order history in list 
         //orderList.add();
         return new Pair<>(indexRest, indexOrder);
@@ -151,18 +162,32 @@ public class randomOrder {
           She and her father, Jotaro Kujo, always dine together 
           at same restaurant every Saturday.*/
         
-        int indexRest = ran.nextInt(); //get index for restaurant
-        int indexOrder = ran.nextInt(); //get index for order
+        int indexRest = ran.nextInt(5); //get index for restaurant
+        int indexOrder = ran.nextInt(getBound(indexRest)); //get index for order
         //store order history in list 
         //orderList.add();
         return new Pair<>(indexRest, indexOrder);
     }
     
+    public Pair<Integer> otherOrder(){
+        int indexRest = ran.nextInt(5); //get index for restaurant
+        int indexOrder = ran.nextInt(getBound(indexRest)); //get index for order
+        return new Pair<>(indexRest, indexOrder);
+    }
+    
     public ArrayList<orderList> storeOrder(Pair<Integer> pair){
-        int restName = pair.first; //pass the index number for restaurant
-        Menu menu = new Menu(restName);
+        Menu menu = new Menu(pair.first);
         restaurant = menu.getRestaurant();
         food = menu.getFood(pair.second);
+        /*for(int j=0;j<menuItem.size();j++){
+            if((menuItem.get(j).getRestaurant()).equals(restaurant)){
+                for(int k=0;k<menuItem.get(j).getIndexA();k++){
+                    food[k] = menuItem.get(j).getName(k);
+                }
+                
+            }
+        }
+        foodName = food[pair.second];*/
         for(int i=0;i<orderList.size();i++){
             if((orderList.get(i).getName()).equals(name)){
                 orderList.set(i, new orderList(name, dayNum, food, restaurant, pair.first, pair.second));
@@ -172,12 +197,6 @@ public class randomOrder {
             }
         }
         return orderList;
-    }
-    
-    public Pair<Integer> otherOrder(){
-        int indexRest = ran.nextInt(); //get index for restaurant
-        int indexOrder = ran.nextInt(); //get index for order
-        return new Pair<>(indexRest, indexOrder);
     }
     
     public int getBound(int indexRest){ //get total menu for each restaurant for random bound num

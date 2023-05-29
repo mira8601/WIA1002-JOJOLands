@@ -4,8 +4,6 @@
  */
 package jojolands;
 
-import java.util.ArrayList;
-
 /**
  *
  * @author 22004818
@@ -46,6 +44,10 @@ public class orderList {
     
     public String[] getRestaurant() {
         return restaurant;
+    }
+    
+    public int[] getIndexRest() { 
+        return indexRest;
     }
     
     public int[] getIndexOrder() { 
