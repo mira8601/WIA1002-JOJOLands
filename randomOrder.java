@@ -85,11 +85,54 @@ public class randomOrder {
         /*values fairness he doesn’t eat any food too frequently 
           or infrequently. Difference in frequency between the 
           foods he eats most and least should not exceed 1.*/
-        
+        int[] indexCompareFood;
+        int[] totalDays;
+        int maxcount = 0;
+        int mincount = 0;
+        int maxElement;
+        int minElement;
+        boolean loop = true;
         int indexRest = ran.nextInt(5); //get index for restaurant
         int indexOrder = ran.nextInt(getBound(indexRest)); //get index for order
-        //store order history in list 
-        //orderList.add();
+        if(!orderList.isEmpty()){
+            while(loop = true){ //loops until match preferences
+                for(int i=0;i<orderList.size();i++){
+                    if(orderList.get(i).getName().equals(name)){
+                        indexCompareFood = orderList.get(i).getIndexOrder(); //store food index to compare
+                        totalDays = orderList.get(i).getDayNum();
+                        if(totalDays.length > 1){ //needs at least 2 item in order to compare
+                            for(int j=0;j<totalDays.length;j++){
+                                int count = 0; //count for frequency
+                                for(int k=0;k<totalDays.length;k++){
+                                    if(indexCompareFood[j] == indexCompareFood[k]){
+                                        count++;
+                                    }
+                                }
+                                if(count > maxcount){ //get maxcount
+                                    maxcount=count;
+                                    maxElement = indexCompareFood[j];
+                                }
+                                if(count < mincount){ //get mincount
+                                    mincount=count;
+                                    minElement = indexCompareFood[j];
+                                }
+                            }
+                        }
+                        else{
+                            break;
+                        }
+
+                    }
+                }
+                if((maxcount - mincount)>1){ //should not exceed 1
+                    indexRest = ran.nextInt(5); //get new index for restaurant
+                    indexOrder = ran.nextInt(getBound(indexRest)); //get new index for order
+                }
+                else{
+                    loop = false; //if fits preferences, end loop
+                }
+            }
+        }
         return new Pair<>(indexRest, indexOrder);
     }
     
@@ -116,7 +159,6 @@ public class randomOrder {
                                 }
                             }
                         }
-                        
                     }
                 }
             }
@@ -222,6 +264,7 @@ public class randomOrder {
         }
         return bound;
     }
+    
     
     public class Pair<T> { //generic class to pair index values
         private final T first;
