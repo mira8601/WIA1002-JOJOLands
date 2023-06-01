@@ -34,7 +34,7 @@ public class JOJOLands {
         //location needed to check the residents available at the location
         
         //need to pass day number from task 1.
-        dayNum = 4; //pre-added to test coding only
+        dayNum = 1; //pre-added to test coding only
         
         //after viewing resident info (task 2), user needs to choose [1] View Resident's Profile
         System.out.print("Select: ");
@@ -58,6 +58,10 @@ public class JOJOLands {
                 }
             }
             
+            randomOrder ro= new randomOrder(name,dayNum);
+            ArrayList<orderList> orderList = ro.randomOrderGenerator();
+            
+
             orderHistory order = new orderHistory(name,dayNum);
             order.printOrderHistory();
             

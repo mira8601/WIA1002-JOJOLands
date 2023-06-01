@@ -4,6 +4,9 @@
  */
 package jojolands;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  *
  * @author 22004818
@@ -13,18 +16,24 @@ public class orderList {
     private String name;
     private int dayNum;
     private int[] day;
-    private String[] food;
-    private String[] restaurant;
-    private int[] indexRest;
-    private int[] indexOrder;
+    private int totalDays=0;
+    private String food;
+    private String restaurant;
+    private List<String> foodList = new ArrayList<>();
+    private List<String> restList = new ArrayList<>();
+    private List<Integer> indexOrderList = new ArrayList<>();
+    private List<Integer> indexRestList = new ArrayList<>();
+    private int indexRest;
+    private int indexOrder;
     
     public orderList(String name, int dayNum, String food, String restaurant, int indexRest, int indexOrder){
         this.name = name;
         this.dayNum = dayNum;
-        this.food[dayNum] = food; //store food according to day
-        this.restaurant[dayNum] = restaurant; //store restaurant according to day
-        this.indexRest[dayNum] = indexRest;
-        this.indexOrder[dayNum] = indexOrder;
+        this.totalDays = dayNum;
+        foodList.add(food);
+        restList.add(restaurant);
+        indexOrderList.add(indexOrder);
+        indexRestList.add(indexRest);
     }
     
     public String getName() {
@@ -38,19 +47,33 @@ public class orderList {
         return day;
     }
     
-    public String[] getFood() {
+    public int getTotalDays(){
+        return totalDays;
+    }
+    
+    private void setFood(){
+        this.food = foodList.get(dayNum-1);
+    }
+    
+    public String getFood() {
         return food;
     }
     
-    public String[] getRestaurant() {
+    private void setRestaurant(){
+        this.restaurant = restList.get(dayNum-1);
+    }
+    
+    public String getRestaurant() {
         return restaurant;
     }
     
-    public int[] getIndexRest() { 
+    public int getIndexRest(int dayNum) { 
+        this.indexRest= indexRestList.get(dayNum);
         return indexRest;
     }
     
-    public int[] getIndexOrder() { 
+    public int getIndexOrder(int dayNum) { 
+        this.indexOrder = indexOrderList.get(dayNum);
         return indexOrder;
     }
 }
