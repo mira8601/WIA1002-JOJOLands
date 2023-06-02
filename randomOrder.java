@@ -30,12 +30,14 @@ public class randomOrder {
     }
     
     public ArrayList<orderList> randomOrderGenerator(){
+        //added comment here to check the preferences first before getting all residents' order
         /*String residentFilePath = "C:\\Users\\hp\\Downloads\\residents.csv";
         loadFile loadSystemFile = new loadFile();
         ArrayList<resident> resident = loadSystemFile.loadresidentFromFile(residentFilePath);*/
+        
         Pair<Integer> pair;
-        name = "Joseph Joestar";
-        while(Days<dayNum){
+        name = "Joseph Joestar"; //pre-added the name to check each preference first
+        while(Days<dayNum){ //loop to generate order for each day
             //for(int i=1;i<resident.size();i++){ //loop through every resident
                // name = resident.get(i).getName();
                 switch (name) {
@@ -74,15 +76,14 @@ public class randomOrder {
         return orderList;
     }
     
-    public Pair<Integer> jonathanOrder(){
+    public Pair<Integer> jonathanOrder(){  //the looping took too long to check the values which causes the output to run way too long
         /*values fairness he doesn’t eat any food too frequently 
           or infrequently. Difference in frequency between the 
           foods he eats most and least should not exceed 1.*/
+        
         int totalDays;
         int maxcount = 0;
         int mincount = 0;
-        int maxElement;
-        int minElement;
         boolean loop = true;
         int indexRest = ran.nextInt(5); //get index for restaurant
         int indexOrder = ran.nextInt(getBound(indexRest)); //get index for order
@@ -102,11 +103,9 @@ public class randomOrder {
                                 }
                                 if(count > maxcount){ //get maxcount
                                     maxcount=count;
-                                    maxElement = orderList.get(i).getIndexOrder(j);
                                 }
                                 if(count < mincount){ //get mincount
                                     mincount=count;
-                                    minElement = orderList.get(i).getIndexOrder(j);
                                 }
                             }
                         }
@@ -234,16 +233,6 @@ public class randomOrder {
         Menu menu = new Menu(pair.first);
         restaurant = menu.getRestaurant();
         food = menu.getFood(pair.second);
-        //System.out.println(food);
-        /*for(int j=0;j<menuItem.size();j++){
-            if((menuItem.get(j).getRestaurant()).equals(restaurant)){
-                for(int k=0;k<menuItem.get(j).getIndexA();k++){
-                    food[k] = menuItem.get(j).getName(k);
-                }
-                
-            }
-        }
-        foodName = food[pair.second];*/
         if(orderList.isEmpty()){
             orderList.add(new orderList(name, 1, food, restaurant, pair.first, pair.second));
         }
