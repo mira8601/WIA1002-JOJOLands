@@ -13,29 +13,19 @@ import java.util.ArrayList;
 public class orderHistory {
     private String name;
     private int dayNum;
-    private String[] food;
-    private String[] restaurant;
     
     public orderHistory(String name, int dayNum){
         this.name = name;
         this.dayNum = dayNum;
     }
     
-    public void printOrderHistory(){ //somehow when run, it stops here w/o error. Pls help T.T
-        randomOrder ro= new randomOrder(name, dayNum);
-        ArrayList<orderList> orderList = ro.randomOrderGenerator();
+    public void printOrderHistory(ArrayList<orderList> orderList){
         System.out.println();
-        System.out.println("Order History");
-        System.out.println("+------+-------------------------------+--------------+");
-        System.out.println("| Day\t| Food\t\t| Restaurant\t|");
-        System.out.println("+------+-------------------------------+--------------+");
         for(int i=0;i<orderList.size();i++){
             if((orderList.get(i).getName()).equals(name)){
-                    System.out.println("|\t" + i+1 + " | " + food[i] + "\t| " 
-                            + restaurant[i] + "\t|");
+                orderList.get(i).printOrderHistory();
             }
         }
-        System.out.println("+------+-------------------------------+--------------+");
         System.out.println("=================================================================");
     }
 }

@@ -20,10 +20,10 @@ public class loadFile{
                 boolean isFirstLine = true;
 
                 while ((line = br.readLine()) != null) {
-                    if (isFirstLine) {
+                    /*if (isFirstLine) {
                         isFirstLine = false;
                         continue;  // Skip the header line
-                    }
+                    }*/
 
                     String[] data = line.split(",");
                     String name = data[0].trim();
@@ -63,10 +63,10 @@ public class loadFile{
             boolean isFirstLine = true;
 
             while ((line = br.readLine()) != null) {
-                if (isFirstLine) {
+                /*if (isFirstLine) {
                     isFirstLine = false;
                     continue;  // Skip the header line
-                }
+                }*/
 
                 String[] data = line.split(",");
 

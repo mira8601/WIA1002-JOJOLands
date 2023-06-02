@@ -5,7 +5,11 @@
 package jojolands;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 /**
  *
@@ -16,12 +20,12 @@ public class randomOrder {
     private int dayNum;
     private String restaurant;
     private String food;
+    private int Days = 0;
     //random food selection algorithm
     Random ran = new Random();
     ArrayList<orderList> orderList = new ArrayList<>();
     
-    public randomOrder(String name, int dayNum){
-        this.name = name;
+    public randomOrder(int dayNum){
         this.dayNum = dayNum;
     }
     
@@ -30,105 +34,43 @@ public class randomOrder {
         loadFile loadSystemFile = new loadFile();
         ArrayList<resident> resident = loadSystemFile.loadresidentFromFile(residentFilePath);*/
         Pair<Integer> pair;
-        if(orderList.isEmpty()){
-            switch (name) {
-                    case "Jonathan Joestar":
-                            pair = jonathanOrder();
-                            orderList = storeOrder(pair);
-                        break;
-                    case "Joseph Joestar":
-                        pair = josephOrder();
-                        orderList = storeOrder(pair);
-                        //test run
-                        System.out.println("Order= " + orderList.get(0).getFood());
-                        break;
-                    case "Jotaro Kujo":
-                        while(orderList.size()<dayNum){
-                            pair = jotaroOrder();
-                            orderList = storeOrder(pair);
-                        }
-                        break;
-                    case "Josuke Higashikata":
-                        while(orderList.size()<dayNum){
-                            pair = josukeOrder();
-                            orderList = storeOrder(pair);
-                        }
-                        break;
-                    case "Giorno Giovanna":
-                        while(orderList.size()<dayNum){
-                            pair = giornoOrder();
-                            orderList = storeOrder(pair);
-                        }
-                        break;
-                    case "Jolyne Cujoh":
-                        while(orderList.size()<dayNum){
-                            pair = jolyneOrder();
-                            orderList = storeOrder(pair);
-                        }
-                        break;
-                    default:
-                        while(orderList.size()<dayNum){
-                            pair = otherOrder();
-                            orderList = storeOrder(pair);
-                        }
-                        break;
-                }
-        }
-        else{
-            while(orderList.get(0).getTotalDays()<dayNum){
-            //for(int i=1;i<resident.size();i++){
-                //name = resident.get(i).getName();
+        name = "Joseph Joestar";
+        while(Days<dayNum){
+            //for(int i=1;i<resident.size();i++){ //loop through every resident
+               // name = resident.get(i).getName();
                 switch (name) {
                     case "Jonathan Joestar":
-                        while(orderList.size()<dayNum){
-                            pair = jonathanOrder();
-                            orderList = storeOrder(pair);
-                        }
+                        pair = jonathanOrder();
+                        orderList = storeOrder(pair,name,Days);
                         break;
                     case "Joseph Joestar":
                         pair = josephOrder();
-                        orderList = storeOrder(pair);
-                        //test run
-                        for(int i=0;i<orderList.size();i++){
-                            if(orderList.get(i).getName().equals(name)){
-                                    System.out.println("Order= " + orderList.get(i).getFood());
-                            }
-                        }
+                        orderList = storeOrder(pair,name,Days);
                         break;
                     case "Jotaro Kujo":
-                        while(orderList.size()<dayNum){
-                            pair = jotaroOrder();
-                            orderList = storeOrder(pair);
-                        }
+                        pair = jotaroOrder();
+                        orderList = storeOrder(pair,name,Days);
                         break;
                     case "Josuke Higashikata":
-                        while(orderList.size()<dayNum){
-                            pair = josukeOrder();
-                            orderList = storeOrder(pair);
-                        }
+                        pair = josukeOrder();
+                        orderList = storeOrder(pair,name,Days);
                         break;
                     case "Giorno Giovanna":
-                        while(orderList.size()<dayNum){
-                            pair = giornoOrder();
-                            orderList = storeOrder(pair);
-                        }
+                        pair = giornoOrder();
+                        orderList = storeOrder(pair,name,Days);
                         break;
                     case "Jolyne Cujoh":
-                        while(orderList.size()<dayNum){
-                            pair = jolyneOrder();
-                            orderList = storeOrder(pair);
-                        }
+                        pair = jolyneOrder();
+                        orderList = storeOrder(pair,name,Days);
                         break;
                     default:
-                        while(orderList.size()<dayNum){
-                            pair = otherOrder();
-                            orderList = storeOrder(pair);
-                        }
+                        pair = otherOrder();
+                        orderList = storeOrder(pair,name,Days);
                         break;
                 }
-            }
+                Days++;
+            //}
         }
-        //}
         return orderList;
     }
     
@@ -136,8 +78,7 @@ public class randomOrder {
         /*values fairness he doesn’t eat any food too frequently 
           or infrequently. Difference in frequency between the 
           foods he eats most and least should not exceed 1.*/
-        int[] indexCompareFood;
-        int[] totalDays;
+        int totalDays;
         int maxcount = 0;
         int mincount = 0;
         int maxElement;
@@ -146,15 +87,15 @@ public class randomOrder {
         int indexRest = ran.nextInt(5); //get index for restaurant
         int indexOrder = ran.nextInt(getBound(indexRest)); //get index for order
         if(!orderList.isEmpty()){
-            while(loop = true){ //loops until match preferences
+            while(loop == true){ //loops until match preferences
                 for(int i=0;i<orderList.size();i++){
                     if(orderList.get(i).getName().equals(name)){
                         //indexCompareFood = orderList.get(i).getIndexOrder(); //store food index to compare
-                        totalDays = orderList.get(i).getDayNum();
-                        if(totalDays.length > 1){ //needs at least 2 item in order to compare
-                            for(int j=0;j<totalDays.length;j++){
+                        totalDays = orderList.get(i).getTotalDays();
+                        if(totalDays > 1){ //needs at least 2 item in order to compare
+                            for(int j=0;j<totalDays;j++){
                                 int count = 0; //count for frequency
-                                for(int k=0;k<totalDays.length;k++){
+                                for(int k=0;k<totalDays;k++){
                                     if(orderList.get(i).getIndexOrder(j) == orderList.get(i).getIndexOrder(k)){
                                         count++;
                                     }
@@ -187,37 +128,55 @@ public class randomOrder {
         return new Pair<>(indexRest, indexOrder);
     }
     
-    public Pair<Integer> josephOrder(){
+    public Pair<Integer> josephOrder(){ // !!This method does not work, it still generates same food twice. Tried using chatGPT and still same
         /*won’t eat the same food twice until he’s tried 
           everything currently available in JOJOLand’s*/
-        int[] indexCompareFood;
-        int[] indexCompareRest;
-        int[] totalDays;
+        int sameRest;
+        int sameOrder;
+        int totalDays;
         int indexRest = ran.nextInt(5); //get index for restaurant
         int indexOrder = ran.nextInt(getBound(indexRest)); //get index for order
-        if(dayNum < 26 && dayNum > 1){ //check if total days = total menu and total days more than 1
+        if(!orderList.isEmpty()){ 
             for(int i=0;i<orderList.size();i++){
                 if(orderList.get(i).getName().equals(name)){
-                    //indexCompareFood = orderList.get(i).getIndexOrder();
-                    //indexCompareRest = orderList.get(i).getIndexRest();
-                    totalDays = orderList.get(i).getDayNum();
-                    for(int j=0;j<totalDays.length;j++){
-                        for(int k=0;k<totalDays.length;k++){
-                            if(orderList.get(i).getIndexRest(j) == indexRest){
-                                if(orderList.get(i).getIndexOrder(k) == indexOrder){ //check if order is similar
-                                    indexRest = ran.nextInt(5); //get new index for restaurant
-                                    indexOrder = ran.nextInt(getBound(indexRest)); //get new index for order
+                    totalDays = orderList.get(i).getTotalDays();
+                    System.out.println(totalDays);
+                    if(totalDays<27){ //check if total days is less than total menu
+                        List<Integer> irestList = orderList.get(i).getIndexRestList();
+                        List<Integer> iorderList = orderList.get(i).getIndexOrderList();
+                        boolean isDuplicate = true;
+                        do{
+                            isDuplicate = false;
+                            for(int j=0;j<totalDays;j++){
+                                System.out.println(j);
+                                if(irestList.get(j) == indexRest){
+                                    for(int k=0;k<totalDays;k++){
+                                        if(iorderList.get(k) == indexOrder){ //check if order is similar
+                                            sameOrder = iorderList.get(k);
+                                            sameRest = iorderList.get(j);
+                                            duplicates(sameOrder, sameRest);
+                                            indexRest = ran.nextInt(5); //get new index for restaurant
+                                            indexOrder = ran.nextInt(getBound(indexRest)); //get new index for order
+                                            System.out.println("new: " + indexOrder);
+                                            isDuplicate = true;
+                                            break;
+                                        }
+                                    }
                                 }
                             }
-                        }
+                        }while(isDuplicate);
                     }
+                    
                 }
             }
         }
-        
-        System.out.println("indexRest= " + indexRest);
-        System.out.println("indexOrder= " + indexOrder);
+        //System.out.println("indexRest= " + indexRest);
+        //System.out.println("indexOrder= " + indexOrder);
         return new Pair<>(indexRest, indexOrder);
+    }
+
+    public void duplicates(int sameOrder, int sameRest){ //for josephOrder to store duplicates
+        List<int[]> dupl = new ArrayList<>();
     }
     
     public Pair<Integer> jotaroOrder(){
@@ -271,11 +230,11 @@ public class randomOrder {
         return new Pair<>(indexRest, indexOrder);
     }
     
-    public ArrayList<orderList> storeOrder(Pair<Integer> pair){
+    public ArrayList<orderList> storeOrder(Pair<Integer> pair, String name, int days){
         Menu menu = new Menu(pair.first);
         restaurant = menu.getRestaurant();
         food = menu.getFood(pair.second);
-        System.out.println(food);
+        //System.out.println(food);
         /*for(int j=0;j<menuItem.size();j++){
             if((menuItem.get(j).getRestaurant()).equals(restaurant)){
                 for(int k=0;k<menuItem.get(j).getIndexA();k++){
@@ -286,17 +245,23 @@ public class randomOrder {
         }
         foodName = food[pair.second];*/
         if(orderList.isEmpty()){
-            orderList.add(new orderList(name, dayNum, food, restaurant, pair.first, pair.second));
+            orderList.add(new orderList(name, 1, food, restaurant, pair.first, pair.second));
         }
         else{
             int length = orderList.size();
+            boolean personExists = false;
             for(int i=0;i<length;i++){
                 if((orderList.get(i).getName()).equals(name)){
-                    orderList.set(i, new orderList(name, dayNum, food, restaurant, pair.first, pair.second));
+                    personExists = true;
+                    orderList.get(i).addDay(orderList.get(i).getTotalDays()+1);
+                    orderList.get(i).addFood(food);
+                    orderList.get(i).addRest(restaurant);
+                    orderList.get(i).addIndexRest(pair.first);
+                    orderList.get(i).addIndexOrder(pair.second);
                 }
-                else{
-                    orderList.add(new orderList(name, dayNum, food, restaurant, pair.first, pair.second));
-                }
+            }
+            if(!personExists){
+                orderList.add(new orderList(name, 1, food, restaurant, pair.first, pair.second));
             }
         }
         return orderList;

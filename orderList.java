@@ -14,8 +14,6 @@ import java.util.List;
 
 public class orderList {
     private String name;
-    private int dayNum;
-    private int[] day;
     private int totalDays=0;
     private String food;
     private String restaurant;
@@ -23,13 +21,13 @@ public class orderList {
     private List<String> restList = new ArrayList<>();
     private List<Integer> indexOrderList = new ArrayList<>();
     private List<Integer> indexRestList = new ArrayList<>();
+     private List<Integer> dayList = new ArrayList<>();
     private int indexRest;
     private int indexOrder;
     
     public orderList(String name, int dayNum, String food, String restaurant, int indexRest, int indexOrder){
         this.name = name;
-        this.dayNum = dayNum;
-        this.totalDays = dayNum;
+        dayList.add(dayNum);
         foodList.add(food);
         restList.add(restaurant);
         indexOrderList.add(indexOrder);
@@ -40,30 +38,39 @@ public class orderList {
         return name;
     }
     
-    public int[] getDayNum() {
-        for(int i=0;i<dayNum;i++){ //create array day from 1 until dayNum
-            day[i] = i+1;
-        }
-        return day;
-    }
+    public void addDay(int dayNum){
+        dayList.add(dayNum);
+    } 
     
     public int getTotalDays(){
+        int last = dayList.size();
+        totalDays = dayList.get(last-1);
         return totalDays;
     }
     
-    private void setFood(){
-        this.food = foodList.get(dayNum-1);
+    public void addFood(String newFood){
+        foodList.add(newFood);
     }
     
-    public String getFood() {
+    public void addRest(String newRest){
+        restList.add(newRest);
+    }
+    
+    public void addIndexOrder(int newIndexOrder){
+        indexOrderList.add(newIndexOrder);
+    }
+    
+    public void addIndexRest(int newIndexRest){
+        indexRestList.add(newIndexRest);
+    }
+    
+    public String getFood(int dayNum) {
+        this.food = foodList.get(dayNum-1);
         return food;
     }
     
-    private void setRestaurant(){
+    public String getRestaurant(int dayNum) {
         this.restaurant = restList.get(dayNum-1);
-    }
-    
-    public String getRestaurant() {
         return restaurant;
     }
     
@@ -75,6 +82,25 @@ public class orderList {
     public int getIndexOrder(int dayNum) { 
         this.indexOrder = indexOrderList.get(dayNum);
         return indexOrder;
+    }
+    
+    public List<Integer> getIndexRestList() {
+        return indexRestList;
+    }
+    
+    public List<Integer> getIndexOrderList() {
+        return indexOrderList;
+    }
+    
+    public void printOrderHistory(){
+        System.out.println("Order History");
+        System.out.println("+------+-------------------------------+--------------+");
+        System.out.println("| Day  | Food                          | Restaurant   |");
+        System.out.println("+------+-------------------------------+--------------+");
+        for (int i = 0; i < foodList.size(); i++) {
+            System.out.printf("| %d   | %-30s | %-12s |%n", i+1, foodList.get(i), restList.get(i));
+        }
+        System.out.println("+------+-------------------------------+--------------+");
     }
 }
 
