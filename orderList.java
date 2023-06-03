@@ -92,6 +92,10 @@ public class orderList {
         return indexOrderList;
     }
     
+    public List<String> getFoodList() {
+        return foodList;
+    }
+    
     public void printOrderHistory(){
         System.out.println("Order History");
         System.out.println("+------+-------------------------------+--------------+");
