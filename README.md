@@ -14,5 +14,6 @@ Done:
 - josephOrder()
 - jotaroOrder()
 - josukeOrder() for this one, I'm not sure if the way I did it is correct or not. Since this preference mentioned 'borrowing money', I'm not sure which food should be added to his order to fit that condition. I just added some of the cheapest menu.
+- giornoOrder() almost done
 
 Also really sorry I took a long time with my part. I'm trying my best but I don't think I can finish this soon so if anyone is free, please help me T.T
