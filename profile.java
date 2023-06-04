@@ -18,8 +18,6 @@ public class profile{
     }
     
     public boolean residentProfile(String residentFilePath, String standFilePath){
-        //String residentFilePath = "C:\\Users\\hp\\Downloads\\residents.csv";
-        //String standFilePath = "C:\\Users\\hp\\Downloads\\stands.csv";
 
         loadFile loadSystemFile = new loadFile();
         ArrayList<resident> resident = loadSystemFile.loadresidentFromFile(residentFilePath);

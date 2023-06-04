@@ -100,6 +100,13 @@ public class Menu{
         food = item.getName();
         return food;
     }
+    
+    public double getPrice(int indexOrder){
+        double price;
+        MenuItem item = menuItem[indexOrder];
+        price = item.getPrice();
+        return price;
+    }
 
     public void displayMenu() {
         if (menuItem != null && menuItem.length > 0) {

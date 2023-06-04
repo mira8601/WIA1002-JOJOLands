@@ -22,16 +22,6 @@ public class orderHistory {
         this.dayNum = dayNum;
     }
     
-    /*public void printOrderHistory(ArrayList<orderList> orderList){
-        System.out.println();
-        for(int i=0;i<orderList.size();i++){
-            if((orderList.get(i).getName()).equals(name)){
-                orderList.printOrderHistory(residentOrderLists);
-            }
-        }
-        System.out.println("=================================================================");
-    }*/
-    
     public void printOrderHistory(ArrayList<ArrayList<orderList>> residentOrderLists) {
         System.out.println("");
         System.out.println("Order History");

@@ -21,7 +21,9 @@ public class randomOrder {
     private int dayNum;
     private String restaurant;
     private String food;
+    private double price;
     private int Days = 0;
+    private int residentIndex = -1;
     //random food selection algorithm
     Random ran = new Random();
     ArrayList<orderList> orderList = new ArrayList<>();
@@ -43,6 +45,7 @@ public class randomOrder {
         while(Days<dayNum){ //loop to generate order for each day
             for (int i = 0; i < resident.size(); i++) { //get name
                 name = resident.get(i).getName();
+                residentIndex = i;
                 switch (name) {
                     case "Jonathan Joestar":
                         pair = jonathanOrder();
@@ -82,17 +85,9 @@ public class randomOrder {
     public Pair<Integer> jonathanOrder() { 
         /*frequency between the foods he eats most and least should not exceed 1.*/
         
-        int totalDays;
         boolean loop = true;
         int indexRest = ran.nextInt(5); //get index for restaurant
         int indexOrder = ran.nextInt(getBound(indexRest)); //get index for order
-        int residentIndex = -1;
-        for (int i = 0; i < resident.size(); i++) {
-            if (resident.get(i).getName().equals(name)) {
-                residentIndex = i;
-                break;
-            }
-        }
         if (residentIndex != -1) { //orderList for Jonathan not empty
             orderList = residentOrderLists.get(residentIndex); //get the index for orderList
             int maxcount = 0;
@@ -155,13 +150,6 @@ public class randomOrder {
         
         int indexRest = ran.nextInt(5); //get index for restaurant
         int indexOrder = ran.nextInt(getBound(indexRest)); //get index for order
-        int residentIndex = -1;
-        for (int i = 0; i < resident.size(); i++) {
-            if (resident.get(i).getName().equals(name)) {
-                residentIndex = i;
-                break;
-            }
-        }
         if (residentIndex != -1) { //orderList for Jonathan not empty
             orderList = residentOrderLists.get(residentIndex); //get the index for orderList
             if(orderList.size()<27){ //check if total days is less than total menu
@@ -183,8 +171,6 @@ public class randomOrder {
                 }while(isDuplicate);
             }
         }
-        //System.out.println("indexRest= " + indexRest);
-        //System.out.println("indexOrder= " + indexOrder);
         return new Pair<>(indexRest, indexOrder);
     }
     
@@ -194,13 +180,6 @@ public class randomOrder {
         
         int indexRest = ran.nextInt(5); //get index for restaurant
         int indexOrder = ran.nextInt(getBound(indexRest)); //get index for order
-        int residentIndex = -1;
-            for (int i = 0; i < resident.size(); i++) {
-                if (resident.get(i).getName().equals(name)) {
-                    residentIndex = i;
-                    break;
-                }
-            }
         if (residentIndex != -1) { //orderList for Jotaro not empty
             orderList = residentOrderLists.get(residentIndex); //get the index for orderList
             if (!orderList.isEmpty()) {
@@ -245,6 +224,7 @@ public class randomOrder {
     public Pair<Integer> josukeOrder(){
         //tight weekly budget of $100
         
+        double budget = 100;
         int indexRest = ran.nextInt(5); //get index for restaurant
         int indexOrder = ran.nextInt(getBound(indexRest)); //get index for order
         //store order history in list 
@@ -282,12 +262,12 @@ public class randomOrder {
         return new Pair<>(indexRest, indexOrder);
     }
     
-    public ArrayList<orderList> storeOrder(Pair<Integer> pair, String name, int days){
+    public ArrayList<orderList> storeOrder(Pair<Integer> pair, String name, int days){ //gets items from Menu and store to orderList
         Menu menu = new Menu(pair.first);
         restaurant = menu.getRestaurant();
         food = menu.getFood(pair.second);
+        price = menu.getPrice(pair.second);
         
-        int residentIndex = -1;
         for (int i = 0; i < resident.size(); i++) {
             if (resident.get(i).getName().equals(name)) {
                 residentIndex = i;
@@ -296,7 +276,7 @@ public class randomOrder {
         }
         if (residentIndex != -1) {
             orderList = residentOrderLists.get(residentIndex);
-            orderList.add(new orderList(name, dayNum, food, restaurant, pair.first, pair.second));
+            orderList.add(new orderList(name, dayNum, food, restaurant, pair.first, pair.second, price));
         }
         return orderList;
     }
