@@ -47,7 +47,7 @@ public class JOJOLands {
             System.out.print("Enter the resident's name: ");
             String name = sc.nextLine();
             while(containName == false){
-                System.out.println("=================================================================");
+                System.out.println("===============================================================================");
 
                 profile profile = new profile(name);
                 containName = profile.residentProfile(residentFilePath, standFilePath);
@@ -58,9 +58,9 @@ public class JOJOLands {
                 }
             }
             randomOrder ro = new randomOrder(dayNum);
-            ArrayList<orderList> orderList = ro.randomOrderGenerator();
+            ArrayList<ArrayList<orderList>> residentOrderLists = ro.randomOrderGenerator();
             orderHistory order = new orderHistory(name,dayNum);
-            order.printOrderHistory(orderList);
+            order.printOrderHistory(residentOrderLists);
             
         }
         else{ //test only when wrong input

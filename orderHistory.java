@@ -13,19 +13,43 @@ import java.util.ArrayList;
 public class orderHistory {
     private String name;
     private int dayNum;
+    String residentFilePath = "C:\\Users\\hp\\Downloads\\residents.csv";
+    loadFile loadSystemFile = new loadFile();
+    ArrayList<resident> resident = loadSystemFile.loadresidentFromFile(residentFilePath);
     
     public orderHistory(String name, int dayNum){
         this.name = name;
         this.dayNum = dayNum;
     }
     
-    public void printOrderHistory(ArrayList<orderList> orderList){
+    /*public void printOrderHistory(ArrayList<orderList> orderList){
         System.out.println();
         for(int i=0;i<orderList.size();i++){
             if((orderList.get(i).getName()).equals(name)){
-                orderList.get(i).printOrderHistory();
+                orderList.printOrderHistory(residentOrderLists);
             }
         }
         System.out.println("=================================================================");
+    }*/
+    
+    public void printOrderHistory(ArrayList<ArrayList<orderList>> residentOrderLists) {
+        System.out.println("");
+        System.out.println("Order History");
+        System.out.println("+------+------------------------------------------+----------------------+");
+        System.out.println("| Day  | Food                                     | Restaurant           |");
+        System.out.println("+------+------------------------------------------+----------------------+");
+        int residentIndex = -1;
+        for (int i = 0; i < resident.size(); i++) {
+            if (resident.get(i).getName().equals(name)) {
+                residentIndex = i;
+                break;
+            }
+        }
+        ArrayList<orderList> orderList = residentOrderLists.get(residentIndex);
+        for (int i = 0; i < orderList.size(); i++) {
+            System.out.printf("| %-2d   | %-40s | %-20s |%n", i+1, orderList.get(i).getFood(), orderList.get(i).getRestaurant());
+        }
+        System.out.println("+------+------------------------------------------+----------------------+");
+        System.out.println("===============================================================================");
     }
 }

@@ -25,22 +25,24 @@ public class randomOrder {
     //random food selection algorithm
     Random ran = new Random();
     ArrayList<orderList> orderList = new ArrayList<>();
+    String residentFilePath = "C:\\Users\\hp\\Downloads\\residents.csv";
+    loadFile loadSystemFile = new loadFile();
+    ArrayList<resident> resident = loadSystemFile.loadresidentFromFile(residentFilePath);
+    ArrayList<ArrayList<orderList>> residentOrderLists = new ArrayList<>(); //stores each residents' order
     
     public randomOrder(int dayNum){
         this.dayNum = dayNum;
     }
     
-    public ArrayList<orderList> randomOrderGenerator(){
-        //added comment here to check the preferences first before getting all residents' order
-        /*String residentFilePath = "C:\\Users\\hp\\Downloads\\residents.csv";
-        loadFile loadSystemFile = new loadFile();
-        ArrayList<resident> resident = loadSystemFile.loadresidentFromFile(residentFilePath);*/
-        
+    public ArrayList<ArrayList<orderList>> randomOrderGenerator(){
         Pair<Integer> pair;
-        name = "Jotaro Kujo"; //pre-added the name to check each preference first
+        //name = "Jonathan Joestar"; //pre-added the name to check each preference first
+        for (int i = 0; i < resident.size(); i++) { //create residentOrderLists for every resident
+            residentOrderLists.add(new ArrayList<>());
+        }
         while(Days<dayNum){ //loop to generate order for each day
-            //for(int i=1;i<resident.size();i++){ //loop through every resident
-               // name = resident.get(i).getName();
+            for (int i = 0; i < resident.size(); i++) { //get name
+                name = resident.get(i).getName();
                 switch (name) {
                     case "Jonathan Joestar":
                         pair = jonathanOrder();
@@ -71,92 +73,75 @@ public class randomOrder {
                         orderList = storeOrder(pair,name,Days);
                         break;
                 }
-                Days++;
-            //}
+            }
+            Days++;
         }
-        return orderList;
+        return residentOrderLists;
     }
     
-    public Pair<Integer> jonathanOrder() { //works now
+    public Pair<Integer> jonathanOrder() { 
         /*frequency between the foods he eats most and least should not exceed 1.*/
         
         int totalDays;
         boolean loop = true;
         int indexRest = ran.nextInt(5); //get index for restaurant
         int indexOrder = ran.nextInt(getBound(indexRest)); //get index for order
-
-        if (!orderList.isEmpty()) {
+        int residentIndex = -1;
+        for (int i = 0; i < resident.size(); i++) {
+            if (resident.get(i).getName().equals(name)) {
+                residentIndex = i;
+                break;
+            }
+        }
+        if (residentIndex != -1) { //orderList for Jonathan not empty
+            orderList = residentOrderLists.get(residentIndex); //get the index for orderList
             int maxcount = 0;
             int mincount = Integer.MAX_VALUE;
             List<Integer> maxIndices = new ArrayList<>(); //stores indices of orders with maxcount
-            int nameIndex = -1;
 
             for (int i = 0; i < orderList.size(); i++) {
-                if (orderList.get(i).getName().equals(name)) {
-                    totalDays = orderList.get(i).getTotalDays();
-                    //System.out.println("Days:" + totalDays);
-                    nameIndex = i;
-                    if (totalDays > 1) { //needs at least 2 items in order to compare
-                        List<String> ifoodList = orderList.get(i).getFoodList();
+                if (orderList.size() > 1) { //needs at least 2 items in order to compare
+                    int count = 0; //count for frequency
 
-                        for (int j = 0; j < totalDays; j++) {
-                            int count = 0; //count for frequency
+                    for (int j = 0; j < orderList.size(); j++) {
+                        if (orderList.get(i).getFood().equals(orderList.get(j).getFood())) {
+                            count++;
+                        }
 
-                            for (int k = 0; k < totalDays; k++) {
-                                if (ifoodList.get(j).equals(ifoodList.get(k))) {
-                                    count++;
-                                }
-                            }
+                        if (count > maxcount) { //new maxcount found, clear previous maxIndices
+                            maxcount = count;
+                            maxIndices.clear();
+                            maxIndices.add(i);
+                        } 
+                        else if (count == maxcount) { //multiple orders with same maxcount
+                            maxIndices.add(i);
+                        }
 
-                            if (count > maxcount) { //new maxcount found, clear previous maxIndices
-                                maxcount = count;
-                                maxIndices.clear();
-                                maxIndices.add(j);
-                            } 
-                            else if (count == maxcount) { //multiple orders with same maxcount
-                                maxIndices.add(j);
-                            }
-
-                            if (count < mincount || mincount == 0) { //get mincount
-                                mincount = count;
-                            }
+                        if (count < mincount || mincount == 0) { //get mincount
+                            mincount = count;
                         }
                     }
                 }
             }
-
-            if (nameIndex != -1) {
-                while (loop) { //loops until preferences are met
-                    boolean foundMatch = false;
-                    if ((maxcount - mincount) >= 1) { //should not exceed 1
-                        List<Integer> iorderList = orderList.get(nameIndex).getIndexOrderList();
-                        List<Integer> irestList = orderList.get(nameIndex).getIndexRestList();
-
-                        for (int l = 0; l < maxIndices.size(); l++) {
-                            //Get the corresponding maxElement and maxRest values
-                            int selectedMaxElement = iorderList.get(maxIndices.get(l));
-                            int selectedMaxRest = irestList.get(maxIndices.get(l));
-                            /*System.out.println("maxE: " + selectedMaxElement);
-                            System.out.println("indexE: " + indexOrder);
-                            System.out.println("maxR: " + selectedMaxRest);
-                            System.out.println("indexR1: " + indexRest);*/
-                            //Check if selectedMaxElement and selectedMaxRest are the same as indexOrder and indexRest
-                            if (selectedMaxElement == indexOrder && selectedMaxRest == indexRest) {
-                                foundMatch = true;
-                                System.out.println("found");
-                                break;
-                            }
+            while (loop) { //loops until preferences are met
+                boolean foundMatch = false;
+                if ((maxcount - mincount) >= 1) { //should not exceed 1
+                    for (int l = 0; l < maxIndices.size(); l++) {
+                        //Get the corresponding maxElement and maxRest values
+                        int selectedMaxElement = orderList.get(maxIndices.get(l)).getIndexOrder();
+                        int selectedMaxRest = orderList.get(maxIndices.get(l)).getIndexRest();
+                        //Check if selectedMaxElement and selectedMaxRest are the same as indexOrder and indexRest
+                        if (selectedMaxElement == indexOrder && selectedMaxRest == indexRest) {
+                            foundMatch = true;
+                            break;
                         }
                     }
-                    if (foundMatch) {
-                        indexRest = ran.nextInt(5);
-                        indexOrder = ran.nextInt(getBound(indexRest));
-                        /*System.out.println("new order");
-                        System.out.println("new: " + indexOrder);
-                        System.out.println("new Rest: " + indexRest);*/
-                    } else {
-                        loop = false;
-                    }
+                }
+                if (foundMatch) {
+                    indexRest = ran.nextInt(5);
+                    indexOrder = ran.nextInt(getBound(indexRest));
+                } else {
+                    loop = false;
                 }
             }
         }
@@ -164,111 +149,94 @@ public class randomOrder {
         return new Pair<>(indexRest, indexOrder);
     }
     
-    public Pair<Integer> josephOrder(){ // !!This method does not work, it still generates same food twice
+    public Pair<Integer> josephOrder(){ 
         /*won’t eat the same food twice until he’s tried 
           everything currently available in JOJOLand’s*/
         
-        int sameRest;
-        int sameOrder;
-        int totalDays;
         int indexRest = ran.nextInt(5); //get index for restaurant
         int indexOrder = ran.nextInt(getBound(indexRest)); //get index for order
-        if(!orderList.isEmpty()){ 
-            for(int i=0;i<orderList.size();i++){
-                if(orderList.get(i).getName().equals(name)){
-                    totalDays = orderList.get(i).getTotalDays();
-                    System.out.println(totalDays);
-                    if(totalDays<27){ //check if total days is less than total menu
-                        List<Integer> irestList = orderList.get(i).getIndexRestList();
-                        List<Integer> iorderList = orderList.get(i).getIndexOrderList();
-                        boolean isDuplicate = true;
-                        do{
-                            isDuplicate = false;
-                            for(int j=0;j<totalDays;j++){
-                                System.out.println(j);
-                                if(irestList.get(j) == indexRest){
-                                    for(int k=0;k<totalDays;k++){
-                                        if(iorderList.get(k) == indexOrder){ //check if order is similar
-                                            sameOrder = iorderList.get(k);
-                                            sameRest = iorderList.get(j);
-                                            duplicates(sameOrder, sameRest);
-                                            indexRest = ran.nextInt(5); //get new index for restaurant
-                                            indexOrder = ran.nextInt(getBound(indexRest)); //get new index for order
-                                            System.out.println("new: " + indexOrder);
-                                            isDuplicate = true;
-                                            break;
-                                        }
-                                    }
+        int residentIndex = -1;
+        for (int i = 0; i < resident.size(); i++) {
+            if (resident.get(i).getName().equals(name)) {
+                residentIndex = i;
+                break;
+            }
+        }
+        if (residentIndex != -1) { //orderList for Jonathan not empty
+            orderList = residentOrderLists.get(residentIndex); //get the index for orderList
+            if(orderList.size()<27){ //check if total days is less than total menu
+                boolean isDuplicate;
+                do{
+                    isDuplicate = false;
+                    for(int j=0;j<orderList.size();j++){
+                        if(orderList.get(j).getIndexRest() == indexRest){
+                            for(int k=0;k<orderList.size();k++){
+                                if(orderList.get(j).getIndexOrder() == indexOrder){ //check if order is similar
+                                    indexRest = ran.nextInt(5); //get new index for restaurant
+                                    indexOrder = ran.nextInt(getBound(indexRest)); //get new index for order
+                                    isDuplicate = true;
+                                    break;
                                 }
                             }
-                        }while(isDuplicate);
+                        }
                     }
-                    
-                }
+                }while(isDuplicate);
             }
         }
         //System.out.println("indexRest= " + indexRest);
         //System.out.println("indexOrder= " + indexOrder);
         return new Pair<>(indexRest, indexOrder);
     }
-
-    public void duplicates(int sameOrder, int sameRest){ //for josephOrder to store duplicates
-        List<int[]> dupl = new ArrayList<>();
-    }
     
-    public Pair<Integer> jotaroOrder(){ //working on this method now
+    public Pair<Integer> jotaroOrder(){ 
         /*try every dish at one restaurant 
           before moving on to the next.*/
         
-        int totalDays;
         int indexRest = ran.nextInt(5); //get index for restaurant
         int indexOrder = ran.nextInt(getBound(indexRest)); //get index for order
-        
-        if(!orderList.isEmpty()){
-            for(int i=0;i<orderList.size();i++){
-                if(orderList.get(i).getName().equals(name)){
-                    totalDays = orderList.get(i).getTotalDays();
-                    //for(int j=0;j<totalDays;j++){
-                    int lastIndexRest = orderList.get(i).getIndexRest(totalDays-1); //get last indexRest from orderList
-                    indexRest = lastIndexRest;
-                    System.out.println("last index: " + indexRest);
-                    //List<Integer> restTried = new ArrayList<>();
-                    //restTried.add(indexRest);
-                    List<Integer> iorderList = orderList.get(i).getIndexOrderList();
-                    //List<Integer> irestList = orderList.get(i).getIndexRestList();
-                    if(iorderList.size() < getBound(indexRest)){ //will fix this later
-                        boolean loop = true;
-                        while(loop){
-                            System.out.println("loop");
-                            indexOrder = ran.nextInt(getBound(indexRest)); //get new index for order
-                            if (!iorderList.contains(indexOrder)) {
-                                loop = false;
+        int residentIndex = -1;
+            for (int i = 0; i < resident.size(); i++) {
+                if (resident.get(i).getName().equals(name)) {
+                    residentIndex = i;
+                    break;
+                }
+            }
+        if (residentIndex != -1) { //orderList for Jotaro not empty
+            orderList = residentOrderLists.get(residentIndex); //get the index for orderList
+            if (!orderList.isEmpty()) {
+                int lastIndexRest = orderList.get(orderList.size()-1).getIndexRest(); //get last indexRest from orderList
+                indexRest = lastIndexRest;
+                indexOrder = ran.nextInt(getBound(indexRest)); //get new index for order
+                int count = 0;
+                List<Integer> found = new ArrayList<>();
+                for(int i=0;i<orderList.size();i++){
+                    if(orderList.get(i).getIndexRest() == indexRest){
+                        found.add(i); //add index for indexRest
+                        count++;
+                    }
+                }
+                if(count > getBound(indexRest)){ //if second time to the restaurant
+                    count = count - getBound(indexRest); //get balance
+                }
+                if(count < getBound(indexRest)){ //haven't tried every menu at the restaurant yet
+                    boolean loop;
+                    do{
+                        loop = false;
+                        for(int i=0;i<found.size();i++){
+                            if (orderList.get(found.get(i)).getIndexOrder() == indexOrder) { //check if food already tried
+                                indexOrder = ran.nextInt(getBound(indexRest)); //get new index for order
+                                loop = true;
                                 break;
                             }
                         }
-
-                    }
-                    else{
-                        indexRest = (lastIndexRest + 1) % 5; // Move to the next restaurant (assuming 5 restaurants)
-                        /*indexRest = ran.nextInt(5); //get index for restaurant
-                        for(int k=0;k<restTried.size();k++){
-                            boolean loop = true;
-                            while(loop){
-                                loop = false;
-                                if(restTried.get(k) == indexRest){
-                                    indexRest = ran.nextInt(5); //get new index for restaurant
-                                    loop = true;
-                                }
-                            }
-                        }*/
-                        indexOrder = ran.nextInt(getBound(indexRest)); //get index for order
-                        iorderList.clear();
-
-                    }
-                        
-                    //}
+                    }while(loop);
+                }
+                else{
+                    indexRest = (lastIndexRest + 1) % 5; // Move to the next restaurant (5 restaurants)
+                    indexOrder = ran.nextInt(getBound(indexRest)); //get new index for order
                 }
             }
+            
         }
         
         return new Pair<>(indexRest, indexOrder);
@@ -318,25 +286,17 @@ public class randomOrder {
         Menu menu = new Menu(pair.first);
         restaurant = menu.getRestaurant();
         food = menu.getFood(pair.second);
-        if(orderList.isEmpty()){
-            orderList.add(new orderList(name, 1, food, restaurant, pair.first, pair.second));
+        
+        int residentIndex = -1;
+        for (int i = 0; i < resident.size(); i++) {
+            if (resident.get(i).getName().equals(name)) {
+                residentIndex = i;
+                break;
+            }
         }
-        else{
-            int length = orderList.size();
-            boolean personExists = false;
-            for(int i=0;i<length;i++){
-                if((orderList.get(i).getName()).equals(name)){
-                    personExists = true;
-                    orderList.get(i).addDay(orderList.get(i).getTotalDays()+1);
-                    orderList.get(i).addFood(food);
-                    orderList.get(i).addRest(restaurant);
-                    orderList.get(i).addIndexRest(pair.first);
-                    orderList.get(i).addIndexOrder(pair.second);
-                }
-            }
-            if(!personExists){
-                orderList.add(new orderList(name, 1, food, restaurant, pair.first, pair.second));
-            }
+        if (residentIndex != -1) {
+            orderList = residentOrderLists.get(residentIndex);
+            orderList.add(new orderList(name, dayNum, food, restaurant, pair.first, pair.second));
         }
         return orderList;
     }

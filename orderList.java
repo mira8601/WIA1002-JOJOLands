@@ -14,31 +14,57 @@ import java.util.List;
 
 public class orderList {
     private String name;
+    private int dayNum;
     private int totalDays=0;
     private String food;
     private String restaurant;
-    private List<String> foodList = new ArrayList<>();
+    /*private List<String> foodList = new ArrayList<>();
     private List<String> restList = new ArrayList<>();
     private List<Integer> indexOrderList = new ArrayList<>();
     private List<Integer> indexRestList = new ArrayList<>();
-     private List<Integer> dayList = new ArrayList<>();
+     private List<Integer> dayList = new ArrayList<>();*/
     private int indexRest;
     private int indexOrder;
     
     public orderList(String name, int dayNum, String food, String restaurant, int indexRest, int indexOrder){
         this.name = name;
-        dayList.add(dayNum);
+        this.dayNum = dayNum;
+        this.food = food;
+        this.restaurant = restaurant;
+        this.indexRest = indexRest;
+        this.indexOrder = indexOrder;
+        /*dayList.add(dayNum);
         foodList.add(food);
         restList.add(restaurant);
         indexOrderList.add(indexOrder);
-        indexRestList.add(indexRest);
+        indexRestList.add(indexRest);*/
     }
     
     public String getName() {
         return name;
     }
     
-    public void addDay(int dayNum){
+    public int getTotalDays(){
+        return totalDays;
+    }
+    
+    public String getFood() {
+        return food;
+    }
+    
+    public String getRestaurant() {
+        return restaurant;
+    }
+    
+    public int getIndexRest(){
+        return indexRest;
+    }
+    
+    public int getIndexOrder(){
+        return indexOrder;
+    }
+    
+    /*public void addDay(int dayNum){
         dayList.add(dayNum);
     } 
     
@@ -94,17 +120,7 @@ public class orderList {
     
     public List<String> getFoodList() {
         return foodList;
-    }
-    
-    public void printOrderHistory(){
-        System.out.println("Order History");
-        System.out.println("+------+-------------------------------+--------------+");
-        System.out.println("| Day  | Food                          | Restaurant   |");
-        System.out.println("+------+-------------------------------+--------------+");
-        for (int i = 0; i < foodList.size(); i++) {
-            System.out.printf("| %d   | %-30s | %-12s |%n", i+1, foodList.get(i), restList.get(i));
-        }
-        System.out.println("+------+-------------------------------+--------------+");
-    }
+    }*/
+
 }
 
