@@ -150,7 +150,7 @@ public class randomOrder {
         
         int indexRest = ran.nextInt(5); //get index for restaurant
         int indexOrder = ran.nextInt(getBound(indexRest)); //get index for order
-        if (residentIndex != -1) { //orderList for Jonathan not empty
+        if (residentIndex != -1) { //orderList for Joseph not empty
             orderList = residentOrderLists.get(residentIndex); //get the index for orderList
             if(orderList.size()<27){ //check if total days is less than total menu
                 boolean isDuplicate;
@@ -222,25 +222,85 @@ public class randomOrder {
     }
     
     public Pair<Integer> josukeOrder(){
-        //tight weekly budget of $100
+        //tight weekly budget of $100, can borrow least amount of money if overspent
         
         double budget = 100;
+        double moneySpent = 0;
         int indexRest = ran.nextInt(5); //get index for restaurant
         int indexOrder = ran.nextInt(getBound(indexRest)); //get index for order
-        //store order history in list 
-        //orderList.add();
+        
+        if (residentIndex != -1) { //orderList for Josuke not empty
+            orderList = residentOrderLists.get(residentIndex); //get the index for orderList
+            if (!orderList.isEmpty()) {
+                int j = Math.min(orderList.size(), 7);
+                for (int i = j; i < orderList.size(); i++) {
+                    moneySpent += orderList.get(i).getPrice();
+                }
+                
+                Menu menu = new Menu(indexRest);
+                moneySpent += menu.getPrice(indexOrder); //get current index's price
+                
+                while(moneySpent>budget){
+                    int[] restArr = {2, 3, 4}; //get the restaurant with cheapest menu
+                    indexRest = restArr[ran.nextInt(restArr.length)]; //get index for restaurant
+                    List<Integer> foodArr = new ArrayList<>();
+                    switch(indexRest){ //get cheepest food from the restaurant
+                        case 2:
+                            foodArr.clear();
+                            foodArr.add(1);
+                            break;
+                        case 3:
+                            foodArr.clear();
+                            foodArr.add(1);
+                            foodArr.add(2);
+                            foodArr.add(5);
+                            break;
+                        case 4:
+                            foodArr.clear();
+                            foodArr.add(0);
+                            foodArr.add(2);
+                            foodArr.add(4);
+                            foodArr.add(5);
+                            break;
+                        default:
+                            break;
+                    }
+                    indexOrder = foodArr.get(ran.nextInt(foodArr.size()));
+                    moneySpent = orderList.get(j).getPrice();
+                }
+            }
+        }
         return new Pair<>(indexRest, indexOrder);
     }
     
-    public Pair<Integer> giornoOrder(){
+    public Pair<Integer> giornoOrder(){ //in progress
         /*visits Trattoria Trussardi twice a week. orders
           different dish than last visit except when only
           1 option available*/
         
+        int visited = 0;
         int indexRest = ran.nextInt(5); //get index for restaurant
         int indexOrder = ran.nextInt(getBound(indexRest)); //get index for order
-        //store order history in list 
-        //orderList.add();
+        
+        if (residentIndex != -1) { //orderList for Josuke not empty
+            orderList = residentOrderLists.get(residentIndex); //get the index for orderList
+            if (!orderList.isEmpty()) {
+                for(int i=0;i<orderList.size();i++){
+                    if(orderList.get(i).getIndexRest() == 2){
+                        visited++;
+                    }
+                }
+                if(visited<2){
+                    for(int i=7;i<orderList.size();i+=7){
+                        indexRest = 2;
+                        indexOrder = ran.nextInt(getBound(indexRest));
+                        if(i>7){
+                            
+                        }
+                    }
+                }
+            }
+        }
         return new Pair<>(indexRest, indexOrder);
     }
     
@@ -251,8 +311,6 @@ public class randomOrder {
         
         int indexRest = ran.nextInt(5); //get index for restaurant
         int indexOrder = ran.nextInt(getBound(indexRest)); //get index for order
-        //store order history in list 
-        //orderList.add();
         return new Pair<>(indexRest, indexOrder);
     }
     
