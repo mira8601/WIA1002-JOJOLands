@@ -34,7 +34,7 @@ public class JOJOLands {
         //location needed to check the residents available at the location
         
         //need to pass day number from task 1.
-        dayNum = 20; //pre-added to test coding only
+        dayNum = 21; //pre-added to test coding only
         
         //after viewing resident info (task 2), user needs to choose [1] View Resident's Profile
         System.out.print("Select: ");
