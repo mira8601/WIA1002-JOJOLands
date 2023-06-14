@@ -2,18 +2,15 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package jojolands;
+package jojoland;
 
 import java.util.ArrayList;
+import static jojoland.StartInterface.currentLocation;
 
-/**
- *
- * @author 22004818
- */
 public class orderHistory {
     private String name;
     private int dayNum;
-    String residentFilePath = "C:\\Users\\hp\\Downloads\\residents.csv";
+    String residentFilePath = "resources/residents.csv";
     loadFile loadSystemFile = new loadFile();
     ArrayList<resident> resident = loadSystemFile.loadresidentFromFile(residentFilePath);
     

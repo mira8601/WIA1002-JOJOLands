@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package jojolands;
+package jojoland;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -11,11 +11,13 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Random;
 import java.util.Set;
+import static jojoland.StartInterface.currentLocation;
 
 /**
  *
  * @author 22004818
  */
+
 public class randomOrder {
     private String name;
     private int dayNum;
@@ -28,16 +30,69 @@ public class randomOrder {
     //random food selection algorithm
     Random ran = new Random();
     ArrayList<orderList> orderList = new ArrayList<>();
-    String residentFilePath = "C:\\Users\\hp\\Downloads\\residents.csv";
+    String residentFilePath = "resources/residents.csv";
     loadFile loadSystemFile = new loadFile();
     ArrayList<resident> resident = loadSystemFile.loadresidentFromFile(residentFilePath);
     ArrayList<ArrayList<orderList>> residentOrderLists = new ArrayList<>(); //stores each residents' order
     
-    public randomOrder(int dayNum){
+    /*public randomOrder(int dayNum){
         this.dayNum = dayNum;
+    }*/
+    
+    public ArrayList<ArrayList<orderList>> randomOrderGenerator(int dayNum, int currDay){
+        Pair<Integer> pair;
+        //name = "Jonathan Joestar"; //pre-added the name to check each preference first
+        if(residentOrderLists.size() != resident.size()){
+            for (int i = 0; i < resident.size(); i++) { //create residentOrderLists for every resident
+                residentOrderLists.add(new ArrayList<>());
+            }
+        }
+        
+        while(currDay!=dayNum){ //loop to generate order for each day
+            for (int i = 0; i < resident.size(); i++) { //get name
+                name = resident.get(i).getName();
+                residentIndex = i;
+                switch (name) {
+                    case "Jonathan Joestar":
+                        pair = jonathanOrder();
+                        orderList = storeOrder(pair,name,Days);
+                        break;
+                    case "Joseph Joestar":
+                        pair = josephOrder();
+                        orderList = storeOrder(pair,name,Days);
+                        break;
+                    case "Jotaro Kujo":
+                        pair = jotaroOrder();
+                        if(Days%7==0)
+                            indexRestSat = pair.first;
+                        orderList = storeOrder(pair,name,Days);
+                        break;
+                    case "Josuke Higashikata":
+                        pair = josukeOrder();
+                        orderList = storeOrder(pair,name,Days);
+                        break;
+                    case "Giorno Giovanna":
+                        pair = giornoOrder();
+                        orderList = storeOrder(pair,name,Days);
+                        break;
+                    case "Jolyne Cujoh":
+                        pair = jolyneOrder();
+                        if(Days%7==0)
+                            indexRestSat = pair.first;
+                        orderList = storeOrder(pair,name,Days);
+                        break;
+                    default:
+                        pair = otherOrder();
+                        orderList = storeOrder(pair,name,Days);
+                        break;
+                }
+            }
+            currDay++;
+        }
+        return residentOrderLists;
     }
     
-    public ArrayList<ArrayList<orderList>> randomOrderGenerator(){
+    /*public ArrayList<ArrayList<orderList>> randomOrderGenerator(int dayNum){
         Pair<Integer> pair;
         //name = "Jonathan Joestar"; //pre-added the name to check each preference first
         for (int i = 0; i < resident.size(); i++) { //create residentOrderLists for every resident
@@ -85,10 +140,10 @@ public class randomOrder {
             Days++;
         }
         return residentOrderLists;
-    }
+    }*/
     
     public Pair<Integer> jonathanOrder() { 
-        /*frequency between the foods he eats most and least should not exceed 1.*/
+        //frequency between the foods he eats most and least should not exceed 1.
         
         boolean loop = true;
         int indexRest = ran.nextInt(5); //get index for restaurant
@@ -415,7 +470,9 @@ public class randomOrder {
         }
         if (residentIndex != -1) {
             orderList = residentOrderLists.get(residentIndex);
-            orderList.add(new orderList(name, dayNum, food, restaurant, pair.first, pair.second, price));
+             // Generate a random arrival time between 1 and 30
+            int arrivalTime = ran.nextInt(59) + 1;
+            orderList.add(new orderList(name, resident.get(residentIndex).getAge(), resident.get(residentIndex).getGender(), arrivalTime, dayNum, food, restaurant, pair.first, pair.second, price));
         }
         return orderList;
     }

@@ -2,18 +2,16 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package jojolands;
+package jojoland;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- *
- * @author 22004818
- */
-
 public class orderList {
     private String name;
+    private String age;
+    private String gender;
+    private int arrivalTime;
     private int dayNum;
     private int totalDays=0;
     private String food;
@@ -22,8 +20,11 @@ public class orderList {
     private int indexRest;
     private int indexOrder;
     
-    public orderList(String name, int dayNum, String food, String restaurant, int indexRest, int indexOrder, double price){
+    public orderList(String name, String age, String gender, int arrivalTime, int dayNum, String food, String restaurant, int indexRest, int indexOrder, double price){
         this.name = name;
+        this.age = age;
+        this.gender = gender;
+        this.arrivalTime = arrivalTime;
         this.dayNum = dayNum;
         this.food = food;
         this.restaurant = restaurant;
@@ -31,9 +32,22 @@ public class orderList {
         this.indexOrder = indexOrder;
         this.price = price;
     }
-    
+
+
     public String getName() {
         return name;
+    }
+    
+    public String getAge() {
+        return age;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+    
+    public int getArrivalTime(){
+        return arrivalTime;
     }
     
     public int getTotalDays(){
@@ -59,6 +73,23 @@ public class orderList {
     public double getPrice(){
         return price;
     }
+    
+    public int getDayNum(){
+        return dayNum;
+    }
+    
+    public static List<orderList> getOrdersByRestaurant(List<orderList> orderList, String restaurant) {
+        List<orderList> orders = new ArrayList<>();
+
+        for (orderList order : orderList) {
+            if (order.getRestaurant().equalsIgnoreCase(restaurant)) {
+                orders.add(order);
+            }
+        }
+
+        return orders;
+    }
+
 
 }
 
