@@ -471,7 +471,7 @@ public class randomOrder {
             orderList = residentOrderLists.get(residentIndex);
              // Generate a random arrival time between 1 and 30
             int arrivalTime = ran.nextInt(59) + 1;
-            orderList.add(new orderList(name, resident.get(residentIndex).getAge(), resident.get(residentIndex).getGender(), arrivalTime, days, food, restaurant, pair.first, pair.second, price));
+            orderList.add(new orderList(name, resident.get(residentIndex).getAge(), resident.get(residentIndex).getGender(), arrivalTime, days+1, food, restaurant, pair.first, pair.second, price));
         }
         return orderList;
     }

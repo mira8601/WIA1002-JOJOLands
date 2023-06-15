@@ -45,12 +45,6 @@ public class StartInterface {
                 
             case 2:
                 System.out.print("Enter the path of your save file: ");
-                try{
-                    loadGame();
-                }catch (Exception e) {
-                    e.printStackTrace(); 
-                }
-                
                 break;
             
             case 3:
@@ -244,12 +238,15 @@ public class StartInterface {
             i++;
         }
         System.out.printf("[%d] Back to Town Hall\n\n", i);
+        ArrayList<ArrayList<orderList>> residentOrderLists = ro.randomOrderGenerator(dayNum, currDay);
+        currDay = dayNum;
         switch(getInput()){
             case 1:
                 moveLocation();
                 break;
             case 2:
                 //jump to Heaven's Door (basic feature 2)
+                heavensDoor(dayNum, currDay, residentOrderLists);
                 break;
             case 3: 
                 //jump to Super Fly (basic feature 7);
@@ -307,7 +304,7 @@ public class StartInterface {
         int indexRest=0;
         ArrayList<ArrayList<orderList>> residentOrderLists = ro.randomOrderGenerator(dayNum, currDay);
         currDay = dayNum;
-        PearlJam pearlJam = new PearlJam(currentLocation, dayNum, residentOrderLists);
+        //PearlJam pearlJam = new PearlJam(currentLocation, dayNum, residentOrderLists);
         switch(currentLocation){
             case "Jade Garden":
                 indexRest = 0;
@@ -341,9 +338,7 @@ public class StartInterface {
                 for (customerPearlJam customer : customers) {
                     pearlJam.addToWaitingList(customer);
                 }*/                
-                pearlJam.sortOrdersWithinRestaurants();
-                pearlJam.displayWaitingList();
-                pearlJam.displayOrderProcessingList();
+                PearlJam(dayNum, residentOrderLists);
                 break;  
 
 
@@ -408,12 +403,16 @@ public class StartInterface {
             i++;
         }
         System.out.printf("[%d] Back to Town Hall\n\n", i);
+        ArrayList<ArrayList<orderList>> residentOrderLists = ro.randomOrderGenerator(dayNum, currDay);
+        currDay = dayNum;
         switch(getInput()){
             case 1:
                 moveLocation();
                 break;
             case 2:
                 //jump to Heaven's Door (basic feature 2)
+                heavensDoor(dayNum, currDay, residentOrderLists);
+                
                 break;
             case 3:
                 if(!history.empty())
@@ -462,12 +461,15 @@ public class StartInterface {
             i++;
         }
         System.out.printf("[%d] Back to Town Hall\n\n", i);
+        ArrayList<ArrayList<orderList>> residentOrderLists = ro.randomOrderGenerator(dayNum, currDay);
+        currDay = dayNum;
         switch(getInput()){
             case 1:
                 moveLocation();
                 break;
             case 2:
                 //jump to basic feature 2
+                heavensDoor(dayNum, currDay, residentOrderLists);
                 break;
             case 3:
                 if(!history.empty())
@@ -517,12 +519,15 @@ public class StartInterface {
             i++;
         }
         System.out.printf("[%d] Back to Town Hall\n\n", i);
+        ArrayList<ArrayList<orderList>> residentOrderLists = ro.randomOrderGenerator(dayNum, currDay);
+        currDay = dayNum;
         switch(getInput()){
             case 1:
                 moveLocation();
                 break;
             case 2:
                 //jump to basic feature 2
+                heavensDoor(dayNum, currDay, residentOrderLists);
                 break;
             case 3:
                 //jump to basic feature 7
@@ -771,6 +776,56 @@ public class StartInterface {
         System.out.println("Thank you for playing!");
         System.out.println("======================================================================");
         System.exit(0);
+    }
+    
+    public static void heavensDoor(int dayNum, int currDay, ArrayList<ArrayList<orderList>> residentOrderLists){
+        loadFile loadSystemFile = new loadFile();
+        ArrayList<resident> resident = loadSystemFile.loadresidentFromFile("resources/residents.csv");
+        ArrayList<stand> stand = loadSystemFile.loadstandFromFile("resources/stands.csv");
+        ArrayList<resident> residentsInArea = loadSystemFile.getResidentsInArea(currentLocation);
+        loadSystemFile.printTable(residentsInArea);
+        boolean loop = true;
+        while(loop){
+            System.out.println("");
+            System.out.println("[1] View Resident's Profile");
+            System.out.println("[2] Sort");
+            System.out.println("[3] Exit");
+            System.out.println("");
+
+            System.out.print("Select: ");
+                String choice = sc.nextLine();
+                switch(choice){
+                    case "1":
+                        //jump to The Joestars (Basic Feature 4)
+                        TheJoestars joestars = new TheJoestars(currentLocation, dayNum, currDay, residentOrderLists);
+                        break;
+                    case "2":
+                        // Prompt for the sorting order
+                        // Sort the residents
+                        ResidentComparator sorter = new ResidentComparator();
+                        StandComparator sorter2 = new StandComparator();
+                        sorter.sort(residentsInArea);
+                        residentsInArea = sorter2.sort(residentsInArea);
+
+                        // Print the sorted table
+                        System.out.println("Sorted Table:");
+                        loadSystemFile.printTable(residentsInArea);
+                        break;
+                    case "3":
+                        loop = false;
+                        break;
+                    default:
+                        System.out.println("Wrong input, please select again.");
+                        break;
+                }
+        }
+    }
+    
+    public static void PearlJam(int dayNum, ArrayList<ArrayList<orderList>> residentOrderLists){
+        PearlJam pearlJam = new PearlJam(currentLocation, dayNum, residentOrderLists);
+        pearlJam.sortOrdersWithinRestaurants();
+        pearlJam.displayWaitingList();
+        pearlJam.displayOrderProcessingList();
     }
     
 }

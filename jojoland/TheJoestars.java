@@ -21,12 +21,14 @@ public class TheJoestars {
     String standFilePath = "C:\\Users\\hp\\Downloads\\stands.csv";
     loadFile loadSystemFile = new loadFile();
     ArrayList<resident> resident = loadSystemFile.loadresidentFromFile(residentFilePath);
+    ArrayList<ArrayList<orderList>> residentOrderLists;
     Scanner sc = new Scanner(System.in);
     
-    public TheJoestars(String currentLocation, int dayNum, int currDay){ 
+    public TheJoestars(String currentLocation, int dayNum, int currDay, ArrayList<ArrayList<orderList>> residentOrderLists){ 
         this.currentLocation = currentLocation;
         this.dayNum = dayNum;
-        this.currDay =currDay;
+        this.currDay = currDay;
+        this.residentOrderLists = residentOrderLists;
         
         //after selecting [1] View Resident's Profile, enter name to view data
         boolean containName = false; //check if entered name is correct or not
@@ -46,8 +48,6 @@ public class TheJoestars {
         }
         
         //calls random order
-        randomOrder ro = new randomOrder();
-        ArrayList<ArrayList<orderList>> residentOrderLists = ro.randomOrderGenerator(dayNum, currDay);
         //prints order history for selected resident
         orderHistory order = new orderHistory(name,dayNum);
         order.printOrderHistory(residentOrderLists);

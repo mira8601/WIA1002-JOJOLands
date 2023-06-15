@@ -7,53 +7,41 @@ import java.util.*;
 
 public class loadFile{
 	private ArrayList<resident> listOfResidents;
-	
+	private String selectResident;
+        Scanner sc = new Scanner(System.in);
 	public loadFile() {
 		this.listOfResidents = new ArrayList<resident>();
 	}
 	
-	public ArrayList<resident> loadresidentFromFile(String filePath) {
-            ArrayList<resident> residentList = new ArrayList<>();
+    public ArrayList<resident> loadresidentFromFile(String filePath) {
+        ArrayList<resident> residentList = new ArrayList<>();
 
-            try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
-                String line;
-                boolean isFirstLine = true;
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            boolean isFirstLine = true;
 
-                while ((line = br.readLine()) != null) {
-                    if (isFirstLine) {
-                        isFirstLine = false;
-                        continue;  // Skip the header line
-                    }
-
-                    String[] data = line.split(",");
-                    String name = data[0].trim();
-                    String age = data[1].trim();
-                    String gender = data[2].trim();
-                    String residentialArea = data[3].trim();
-                    //combine the fourth and fifth collumn for the rows that have fifth collumn
-                    if((data[0]).equals("George Joestar II")
-                           ||(data[0]).equals("Giorno Giovanna") 
-                           ||(data[0]).equals("Holy Kujo")
-                           ||(data[0]).equals("Jonathan Joestar")
-                           ||(data[0]).equals("Joseph Joestar")
-                           ||(data[0]).equals("Josuke Higashikata")
-                           ||(data[0]).equals("Jotaro Kujo")){
-                        String parents = data[4].trim() + ", " + data[5].trim();
-                        residentList.add(new resident(name, age, gender, residentialArea, parents));
-                    }
-                    else{
-                        String parents = data[4].trim();
-                        residentList.add(new resident(name, age, gender, residentialArea, parents));
-                    }
-                    
+            while ((line = br.readLine()) != null) {
+                if (isFirstLine) {
+                    isFirstLine = false;
+                    continue;  // Skip the header line
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
 
-            this.listOfResidents = residentList;
-            return listOfResidents;
+                String[] data = line.split(",");
+                String name = data[0].trim();
+                String age = data[1].trim();
+                String gender = data[2].trim();
+                String residentialArea = data[3].trim();
+                String parents = data[4].trim();
+
+                residentList.add(new resident(name, age, gender, residentialArea, parents));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+        
+        this.listOfResidents = residentList;
+        return listOfResidents;
+    }
     
     public ArrayList<stand> loadstandFromFile(String filePath) {
         ArrayList<stand> standList = new ArrayList<>();
@@ -96,29 +84,66 @@ public class loadFile{
     }
 
 
-    public void displayResidentsInArea(String residentialArea) {
-    		ArrayList<resident> sorted = new ArrayList<>();
-    		ResidentComparator sorter = new ResidentComparator();
-            boolean foundResidents = false;
-            for (resident residents : this.listOfResidents) {
-                if (residents.getResidentialArea().equalsIgnoreCase(residentialArea)) {
-                	sorted.add(residents);
-                    
-                    foundResidents = true;
-                }
+    public ArrayList<resident> getResidentsInArea(String residentialArea) {
+        ArrayList<resident> residentsInArea = new ArrayList<>();
+        boolean foundResidents = false;
+
+        for (resident residents : this.listOfResidents) {
+            if (residents.getResidentialArea().equalsIgnoreCase(residentialArea)) {
+                residentsInArea.add(residents);
+                foundResidents = true;
             }
-            if (!foundResidents) {
-                System.out.println("No residents found in the given residential area.");
-            } else {
-            	sorter.sort(sorted);
-            	for (resident residents : sorted) {
-            		System.out.println(residents);
-            	}
-            }
-          
         }
 
-    public String selectResidentialArea() {
+        if (!foundResidents) {
+            System.out.println("No residents found in the given residential area.");
+            return null;
+        } else {
+            return residentsInArea;
+        }
+    }
+
+    public void printTable(ArrayList<resident> residents) {
+            System.out.println("");
+            System.out.println("Resident Information in " +  residents.get(0).getResidentialArea());
+        System.out.println("+----+-----------------------+-----+--------+-----------------------+-------------------+-----------+-----------+---------+-----------+-----------------------+");
+        System.out.println("| No | Name                  | Age | Gender | Stand                 | Destructive Power | Speed     | Range     | Stamina | Precision | Development Potential |");
+        System.out.println("+----+-----------------------+-----+--------+-----------------------+-------------------+-----------+-----------+---------+-----------+-----------------------+");
+        int counter = 1;
+        for (resident resident1 : residents) {
+            stand residentStand = resident1.getStand();
+            String standName = residentStand != null ? residentStand.getStand() : "N/A";
+            String destructivePower = residentStand != null ? residentStand.getDestructivePower() : "-";
+            String speed = residentStand != null ? residentStand.getSpeed() : "-";
+            String range = residentStand != null ? residentStand.getRange() : "-";
+            String stamina = residentStand != null ? residentStand.getStamina() : "-";
+            String precision = residentStand != null ? residentStand.getPrecision() : "-";
+            String developmentPotential = residentStand != null ? residentStand.getDevelopmentPotential() : "-";
+
+            System.out.printf("| %-2d | %-21s | %-3s | %-6s | %-21s | %-17s | %-9s | %-9s | %-7s | %-9s | %-21s |\n",
+                    counter, resident1.getName(), resident1.getAge(), resident1.getGender(), standName, destructivePower,
+                    speed, range, stamina, precision, developmentPotential);
+
+            counter++;
+        }
+        System.out.println("+----+-----------------------+-----+--------+-----------------------+-------------------+-----------+-----------+---------+-----------+-----------------------+");
+        System.out.println("");
+    }
+
+    public void sortTable(ArrayList<resident> residentsInArea){
+        // Prompt for the sorting order
+        // Sort the residents
+        ResidentComparator sorter = new ResidentComparator();
+        StandComparator sorter2 = new StandComparator();
+        sorter.sort(residentsInArea);
+        residentsInArea = sorter2.sort(residentsInArea);
+
+        // Print the sorted table
+        System.out.println("Sorted Table:");
+        printTable(residentsInArea);
+    }	      
+
+    /*public String selectResidentialArea() {
             System.out.println("Residential Areas:");
             System.out.println("1. Morioh Grand Hotel");
             System.out.println("2. Trattoria Trussardi");
@@ -136,6 +161,7 @@ public class loadFile{
             System.out.println("14. Savage Garden");
 
             Scanner scanner = new Scanner(System.in);
+            System.out.println("");
             System.out.print("Enter the number corresponding to the residential area: ");
             int choice = scanner.nextInt();
 
@@ -171,6 +197,8 @@ public class loadFile{
                 default:
                     return null;
             }
-        }
+            
+         
+        }*/
 	
 }
