@@ -1,3 +1,3 @@
 # WIA1002-JOJOLands
 
-The jojoland folder is the latest version. I fixed the randomOrder so do change it if you are using the class. Ignore PearlJam class since it is the one with duplicate values (can get the PearlJam classes from Yan Xin). 
+The jojoland folder is the latest version. The folder already combines Heaven's Door (basic feature 2), Pearl Jam (basic feature 3), The Joestars (basic feature 4), and Moody Blues (basic feature 5) in StartInterface. All of these basic features are completed but still waiting for basic feature 6 incase need to change basic feature 5.
