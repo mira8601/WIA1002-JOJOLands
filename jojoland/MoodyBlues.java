@@ -309,51 +309,6 @@ public class MoodyBlues {
         return agg;
     }
     
-   /* public void minSales(){
-        double price;
-        int mincount = Integer.MAX_VALUE;
-        int index = 0;
-        
-        System.out.print("Enter Start Day(min 1): ");
-        int startDay = sc.nextInt();
-        sc.nextLine();
-        
-        System.out.print("Enter End Day(max " + dayNum + "): ");
-        int endDay = sc.nextInt();
-        sc.nextLine();
-        
-        System.out.println("==========================================================================");
-        System.out.println("Restaurant: " + currentLocation);
-        System.out.println("Minimum Sales (Day  " + startDay + " - " + endDay + ")");
-        System.out.println("+------------------------------------------+------------+--------------+");
-        System.out.println("| Food                                     | Quantity   | Total Price  |");
-        System.out.println("+------------------------------------------+------------+--------------+");
-        for (int i = 0; i < agg.size(); i++) {
-            System.out.println("dayNum: " + agg.get(i).getDayNum());
-            System.out.println("startDay: " + startDay);
-            if(agg.get(i).getDayNum() >= startDay-1 && agg.get(i).getDayNum() <= endDay-1){
-                int quantity = 0;
-                for(int j = 0; j < agg.size(); j++){
-                    if(agg.get(j).getDayNum() >= startDay-1 && agg.get(j).getDayNum() <= endDay-1){
-                        if(agg.get(i).getFood().equals(agg.get(j).getFood())){
-                            quantity++;
-                        }
-                    } 
-                } 
-                if (quantity < mincount) { //get mincount
-                    mincount = quantity;
-                    index = i;
-                }
-            }    
-        }
-        price = agg.get(index).getPrice() * mincount;
-        System.out.printf("| %-40s | %10d | $%11.2f |%n" ,agg.get(index).getFood(), mincount, price);
-        System.out.println("+------------------------------------------+------------+--------------+");
-        System.out.printf("|                                         Minimum Sales | $%11.2f |%n", price);
-        System.out.println("+------------------------------------------+------------+--------------+");
-        System.out.println("==========================================================================");
-    }*/
-    
     class Sale{
         private String food;
         private int quantity;

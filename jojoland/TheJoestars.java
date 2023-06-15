@@ -16,15 +16,17 @@ import java.util.Scanner;
 public class TheJoestars {
     private String currentLocation;
     private int dayNum;
+    private int currDay;
     String residentFilePath = "resources/residents.csv";
     String standFilePath = "C:\\Users\\hp\\Downloads\\stands.csv";
     loadFile loadSystemFile = new loadFile();
     ArrayList<resident> resident = loadSystemFile.loadresidentFromFile(residentFilePath);
     Scanner sc = new Scanner(System.in);
     
-    public TheJoestars(String currentLocation, int dayNum){ 
+    public TheJoestars(String currentLocation, int dayNum, int currDay){ 
         this.currentLocation = currentLocation;
         this.dayNum = dayNum;
+        this.currDay =currDay;
         
         //after selecting [1] View Resident's Profile, enter name to view data
         boolean containName = false; //check if entered name is correct or not
@@ -45,9 +47,9 @@ public class TheJoestars {
         
         //calls random order
         randomOrder ro = new randomOrder();
-        //ArrayList<ArrayList<orderList>> residentOrderLists = ro.randomOrderGenerator(dayNum, currDay);
+        ArrayList<ArrayList<orderList>> residentOrderLists = ro.randomOrderGenerator(dayNum, currDay);
         //prints order history for selected resident
         orderHistory order = new orderHistory(name,dayNum);
-        //order.printOrderHistory(residentOrderLists);
+        order.printOrderHistory(residentOrderLists);
     }
 }

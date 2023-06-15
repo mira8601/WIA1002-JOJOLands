@@ -250,13 +250,6 @@ public class StartInterface {
                 break;
             case 2:
                 //jump to Heaven's Door (basic feature 2)
-                //test for basic feature 3
-                ArrayList<ArrayList<orderList>> residentOrderLists = ro.randomOrderGenerator(dayNum, currDay);
-                currDay = dayNum;
-                //prints order history for selected resident
-                String name = "Joseph Joestar";
-                orderHistory order = new orderHistory(name,dayNum);
-                order.printOrderHistory(residentOrderLists);
                 break;
             case 3: 
                 //jump to Super Fly (basic feature 7);

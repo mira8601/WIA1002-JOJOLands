@@ -34,7 +34,6 @@ public class orderHistory {
         }
         ArrayList<orderList> orderList = residentOrderLists.get(residentIndex);
         for (int i = 0; i < orderList.size(); i++) {
-            System.out.println("dayNum: " + orderList.get(i).getDayNum());
             System.out.printf("| %-2d   | %-40s | %-20s |%n", i+1, orderList.get(i).getFood(), orderList.get(i).getRestaurant());
         }
         System.out.println("+------+------------------------------------------+----------------------+");
