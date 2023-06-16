@@ -40,7 +40,6 @@ public class randomOrder {
     
     public ArrayList<ArrayList<orderList>> randomOrderGenerator(int dayNum, int currDay){
         Pair<Integer> pair;
-        //name = "Jonathan Joestar"; //pre-added the name to check each preference first
         if(residentOrderLists.size() != resident.size()){
             for (int i = 0; i < resident.size(); i++) { //create residentOrderLists for every resident
                 residentOrderLists.add(new ArrayList<>());
@@ -90,56 +89,6 @@ public class randomOrder {
         }
         return residentOrderLists;
     }
-    
-    /*public ArrayList<ArrayList<orderList>> randomOrderGenerator(int dayNum){
-        Pair<Integer> pair;
-        //name = "Jonathan Joestar"; //pre-added the name to check each preference first
-        for (int i = 0; i < resident.size(); i++) { //create residentOrderLists for every resident
-            residentOrderLists.add(new ArrayList<>());
-        }
-        while(Days<dayNum){ //loop to generate order for each day
-            for (int i = 0; i < resident.size(); i++) { //get name
-                name = resident.get(i).getName();
-                residentIndex = i;
-                switch (name) {
-                    case "Jonathan Joestar":
-                        pair = jonathanOrder();
-                        orderList = storeOrder(pair,name,Days);
-                        break;
-                    case "Joseph Joestar":
-                        pair = josephOrder();
-                        orderList = storeOrder(pair,name,Days);
-                        break;
-                    case "Jotaro Kujo":
-                        pair = jotaroOrder();
-                        if(Days%7==0)
-                            indexRestSat = pair.first;
-                        orderList = storeOrder(pair,name,Days);
-                        break;
-                    case "Josuke Higashikata":
-                        pair = josukeOrder();
-                        orderList = storeOrder(pair,name,Days);
-                        break;
-                    case "Giorno Giovanna":
-                        pair = giornoOrder();
-                        orderList = storeOrder(pair,name,Days);
-                        break;
-                    case "Jolyne Cujoh":
-                        pair = jolyneOrder();
-                        if(Days%7==0)
-                            indexRestSat = pair.first;
-                        orderList = storeOrder(pair,name,Days);
-                        break;
-                    default:
-                        pair = otherOrder();
-                        orderList = storeOrder(pair,name,Days);
-                        break;
-                }
-            }
-            Days++;
-        }
-        return residentOrderLists;
-    }*/
     
     public Pair<Integer> jonathanOrder() { 
         //frequency between the foods he eats most and least should not exceed 1.
