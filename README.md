@@ -5,11 +5,15 @@ The jojoland folder is the latest version. The folder already combines Heaven's 
 Changes: (better to dl the other classes(except StartInterface) again since I fixed a few things in other basic features as well)
 1. StartInterface:
   - to call heaven's door:
-    
+
+```
       //jump to Heaven's Door (basic feature 2)
       heavensDoor(dayNum, currDay, residentOrderLists);
+```
     
   - heaven's door method:
+
+    ```
     
       public static void heavensDoor(int dayNum, int currDay, ArrayList<ArrayList<orderList>> residentOrderLists){
         loadFile loadSystemFile = new loadFile();
@@ -53,8 +57,12 @@ Changes: (better to dl the other classes(except StartInterface) again since I fi
                 }
         }
     }
+
+    ```
     
   - to call moody blues and milagro man inside MissionThree():
+
+    ```
     
             case 4:
                 //jump to Moody Blue (basic feature 5)
@@ -72,3 +80,5 @@ Changes: (better to dl the other classes(except StartInterface) again since I fi
                 MilagroMan milagroMan = new MilagroMan(dayNum, currentLocation, residentOrderLists);
                 milagroMan.milagroManMode();
                 break;
+
+    ```
