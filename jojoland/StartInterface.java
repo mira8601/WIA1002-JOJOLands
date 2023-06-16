@@ -26,7 +26,7 @@ public class StartInterface {
     static Stack<String> history = new Stack<>();
     static Stack<String> forward = new Stack<>();
     static ArrayList<String> list;
-    static randomOrder ro;
+    static randomOrder ro = new randomOrder(); //initialize and generate orders for first day
     static int currDay = 0; //for randomOrder
     
     //method to start the game
@@ -36,8 +36,7 @@ public class StartInterface {
         System.out.println("[3] Exit\n");
                 
         switch(getInput()){
-            case 1:
-                ro = new randomOrder(); //initialize and generate orders for first day
+            case 1: 
                 chooseMap();
                 displayDay();
                 getMission();
@@ -304,7 +303,6 @@ public class StartInterface {
         int indexRest=0;
         ArrayList<ArrayList<orderList>> residentOrderLists = ro.randomOrderGenerator(dayNum, currDay);
         currDay = dayNum;
-        //PearlJam pearlJam = new PearlJam(currentLocation, dayNum, residentOrderLists);
         switch(currentLocation){
             case "Jade Garden":
                 indexRest = 0;
@@ -331,17 +329,8 @@ public class StartInterface {
                 break;
             case 2:
                 //jump to Pearl Jam (basic feature 3)
-                /*orderList orderObj = new orderList("", 0, "", "", 0, 0, 0.0);
-                loadFilePearlJam loader = new loadFilePearlJam();
-                List<customerPearlJam> customers = loader.loadCustomerPJFromFile("resources/residents.csv", orderObj.getRestaurant(),  orderObj.getFood());
-
-                for (customerPearlJam customer : customers) {
-                    pearlJam.addToWaitingList(customer);
-                }*/                
                 PearlJam(dayNum, residentOrderLists);
                 break;  
-
-
             case 3: 
                 //jump to Pearl Jam (basic feature 3)
                 menu.displayMenu();
@@ -351,10 +340,16 @@ public class StartInterface {
                 residentOrderLists = ro.randomOrderGenerator(dayNum, currDay);
                 currDay = dayNum;
                 MoodyBlues moodyBlues= new MoodyBlues(dayNum, currentLocation, residentOrderLists);
-                moodyBlues.salesInfo();
+                boolean milagro = false; //not in Milagro Man mode
+                List<List<Sale>> salesRecord = new ArrayList<>(); //empty list
+                moodyBlues.salesInfo(milagro, salesRecord);
                 break;
             case 5:
                 //jump to Milagro Man (basic feature 6)
+                residentOrderLists = ro.randomOrderGenerator(dayNum, currDay);
+                currDay = dayNum;
+                MilagroMan milagroMan = new MilagroMan(dayNum, currentLocation, residentOrderLists);
+                milagroMan.milagroManMode();
                 break;
             case 6:
                 if(!history.empty())
@@ -412,7 +407,6 @@ public class StartInterface {
             case 2:
                 //jump to Heaven's Door (basic feature 2)
                 heavensDoor(dayNum, currDay, residentOrderLists);
-                
                 break;
             case 3:
                 if(!history.empty())

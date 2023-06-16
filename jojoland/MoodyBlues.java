@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package jojoland;
 
 import java.util.ArrayList;
@@ -30,8 +26,13 @@ public class MoodyBlues {
         this.residentOrderLists = residentOrderLists;
     }
     
-    public void salesInfo(){
-        salesRecord = getSales();
+    public void salesInfo(boolean milagro, List<List<Sale>> salesRecord){
+        if(milagro == true){
+            this.salesRecord = salesRecord;
+        }else{
+            this.salesRecord = getSales();
+        }
+        
         boolean loop = true;
         while(loop){
             System.out.println("Restaurant: " + currentLocation);
@@ -73,6 +74,7 @@ public class MoodyBlues {
     }
     
     public List<List<Sale>> getSales(){ //get sales by day
+        salesRecord = new ArrayList<>();
         int quantity = 1;
         if(salesRecord.size() != dayNum){
             for (int i = 0; i < dayNum; i++) { //create salesRecord for each day
@@ -179,11 +181,11 @@ public class MoodyBlues {
         double maxSale = -1;
         int index = -1;
         
-        System.out.print("Enter Start Day(min 1): ");
+        System.out.print("Enter Start Day: ");
         int startDay = sc.nextInt();
         sc.nextLine();
         
-        System.out.print("Enter End Day(max " + dayNum + "): ");
+        System.out.print("Enter End Day: ");
         int endDay = sc.nextInt();
         sc.nextLine();
         
@@ -287,10 +289,10 @@ public class MoodyBlues {
     public List<Sale> aggregated(int startDay, int endDay){
         List<Sale> agg = new ArrayList<>(); //stores sales for aggregated information
         int quantity;
-        int found = 0;
         for (int i = startDay-1; i <= endDay-1; i++) {
             sale = salesRecord.get(i);
             for(int j = 0; j < sale.size(); j++){
+                int found = 0;
                 if(!agg.isEmpty()){
                     for(int k = 0; k < agg.size(); k++){
                         if(sale.get(j).getFood().equals(agg.get(k).getFood())){
@@ -307,35 +309,5 @@ public class MoodyBlues {
             }
         }
         return agg;
-    }
-    
-    class Sale{
-        private String food;
-        private int quantity;
-        private double price;
-        private int dayNum;
-        
-        public Sale(String food, int quantity, double price, int dayNum){
-            this.food = food;
-            this.quantity = quantity;
-            this.price = price;
-            this.dayNum = dayNum;
-        }
-        
-        public String getFood() {
-            return food;
-        }
-
-        public int getQuantity() {
-            return quantity;
-        }
-        
-        public double getPrice(){
-            return price;
-        }
-        
-        public int getDayNum() {
-            return dayNum;
-        }
     }
 }

@@ -47,7 +47,6 @@ public class TheJoestars {
             }
         }
         
-        //calls random order
         //prints order history for selected resident
         orderHistory order = new orderHistory(name,dayNum);
         order.printOrderHistory(residentOrderLists);

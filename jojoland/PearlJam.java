@@ -45,22 +45,6 @@ public class PearlJam {
         sortOrdersWithinRestaurants();
     }
     
-    /*public List<orderList> getOrders() {
-        waitingList.clear(); // Clear the waitingList before populating it again
-
-        for (ArrayList<orderList> orderList : residentOrderLists) {
-            if (!orderList.isEmpty()) {
-                orderList lastOrder = orderList.get(orderList.size() - 1);
-                // Check if the last order is for the selected restaurant and current day
-                if (lastOrder.getRestaurant().equals(selectedRestaurant) && lastOrder.getDayNum() == dayNum) {
-                    waitingList.add(lastOrder);
-                }
-            }
-        }
-        System.out.println("waitingList size: " + waitingList.size());
-        return waitingList;
-    }*/
-    
     public List<orderList> getOrders(){
         waitingList.clear(); // Clear the waitingList before populating it again
         for (int i = 0; i < resident.size(); i++) {
