@@ -40,6 +40,7 @@ public class randomOrder {
     
     public ArrayList<ArrayList<orderList>> randomOrderGenerator(int dayNum, int currDay){
         Pair<Integer> pair;
+        //name = "Jonathan Joestar"; //pre-added the name to check each preference first
         if(residentOrderLists.size() != resident.size()){
             for (int i = 0; i < resident.size(); i++) { //create residentOrderLists for every resident
                 residentOrderLists.add(new ArrayList<>());
@@ -60,9 +61,12 @@ public class randomOrder {
                         orderList = storeOrder(pair,name,currDay);
                         break;
                     case "Jotaro Kujo":
-                        pair = jotaroOrder();
-                        if(currDay%7==0)
+                        pair = jotaroOrder(currDay);
+                        if(pair.first != 3 && pair.first != 4){
                             indexRestSat = pair.first;
+                        }else{
+                            indexRestSat = Integer.MAX_VALUE; // resets
+                        }
                         orderList = storeOrder(pair,name,currDay);
                         break;
                     case "Josuke Higashikata":
@@ -75,8 +79,9 @@ public class randomOrder {
                         break;
                     case "Jolyne Cujoh":
                         pair = jolyneOrder(currDay);
-                        if(currDay%7==0)
+                        if(indexRestSat == Integer.MAX_VALUE){
                             indexRestSat = pair.first;
+                        }
                         orderList = storeOrder(pair,name,currDay);
                         break;
                     default:
@@ -182,7 +187,7 @@ public class randomOrder {
         return new Pair<>(indexRest, indexOrder);
     }
     
-    public Pair<Integer> jotaroOrder(){ 
+    public Pair<Integer> jotaroOrder(int currDay){ 
         /*try every dish at one restaurant 
           before moving on to the next.*/
         
@@ -191,39 +196,43 @@ public class randomOrder {
         if (residentIndex != -1) { //orderList for Jotaro not empty
             orderList = residentOrderLists.get(residentIndex); //get the index for orderList
             if (!orderList.isEmpty()) {
-                int lastIndexRest = orderList.get(orderList.size()-1).getIndexRest(); //get last indexRest from orderList
-                indexRest = lastIndexRest;
-                indexOrder = ran.nextInt(getBound(indexRest)); //get new index for order
-                int count = 0;
-                List<Integer> found = new ArrayList<>();
-                for(int i=0;i<orderList.size();i++){
-                    if(orderList.get(i).getIndexRest() == indexRest){
-                        found.add(i); //add index for indexRest
-                        count++;
-                    }
-                }
-                if(count > getBound(indexRest)){ //if second time to the restaurant
-                    count = count - getBound(indexRest); //get balance
-                }
-                if(count < getBound(indexRest)){ //haven't tried every menu at the restaurant yet
-                    boolean loop;
-                    do{
-                        loop = false;
-                        for(int i=0;i<found.size();i++){
-                            if (orderList.get(found.get(i)).getIndexOrder() == indexOrder) { //check if food already tried
-                                indexOrder = ran.nextInt(getBound(indexRest)); //get new index for order
-                                loop = true;
-                                break;
-                            }
+                if(currDay%6!=0){
+                    int lastIndexRest = orderList.get(orderList.size()-1).getIndexRest(); //get last indexRest from orderList
+                    indexRest = lastIndexRest;
+                    indexOrder = ran.nextInt(getBound(indexRest)); //get new index for order
+                    int count = 0;
+                    List<Integer> found = new ArrayList<>();
+                    for(int i=0;i<orderList.size();i++){
+                        if(orderList.get(i).getIndexRest() == indexRest){
+                            found.add(i); //add index for indexRest
+                            count++;
                         }
-                    }while(loop);
-                }
-                else{
-                    indexRest = (lastIndexRest + 1) % 5; // Move to the next restaurant (5 restaurants)
+                    }
+                    if(count > getBound(indexRest)){ //if second time to the restaurant
+                        count = count - getBound(indexRest); //get balance
+                    }
+                    if(count < getBound(indexRest)){ //haven't tried every menu at the restaurant yet
+                        boolean loop;
+                        do{
+                            loop = false;
+                            for(int i=0;i<found.size();i++){
+                                if (orderList.get(found.get(i)).getIndexOrder() == indexOrder) { //check if food already tried
+                                    indexOrder = ran.nextInt(getBound(indexRest)); //get new index for order
+                                    loop = true;
+                                    break;
+                                }
+                            }
+                        }while(loop);
+                    }
+                    else{
+                        indexRest = (lastIndexRest + 1) % 5; // Move to the next restaurant (5 restaurants)
+                        indexOrder = ran.nextInt(getBound(indexRest)); //get new index for order
+                    }
+                }else{
+                    indexRest = indexRestSat; //
                     indexOrder = ran.nextInt(getBound(indexRest)); //get new index for order
                 }
             }
-            
         }
         return new Pair<>(indexRest, indexOrder);
     }
@@ -374,7 +383,7 @@ public class randomOrder {
 
 	if (residentIndex != -1) { //orderList for Jolyne not empty
             orderList = residentOrderLists.get(residentIndex); //get the index for orderList
-            if(currDay%7!=0){ //if the day is not Saturday
+            if(currDay%6!=0){ //if the day is not Saturday
                 //if the previous restaurant is same as the current generated one
                 boolean loop;
                 do{
